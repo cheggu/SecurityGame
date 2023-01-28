@@ -11,7 +11,7 @@ Encryption / Decryption
 
 Bruteforcing tools
 
-Malware Analysis
+Threat Analysis
 
 Patching Vulnerabilities
 

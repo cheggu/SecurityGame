@@ -9,7 +9,7 @@ Some topics include:
 
 Encryption / Decryption
 
-Bruteforce Attacking
+Bruteforcing tools
 
 Malware Analysis
 

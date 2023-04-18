@@ -12,7 +12,7 @@ public:
 	sf::Vector2f size;
 
 	uiElement() {
-		id = generateRandomNumber();
+		id = generateID();
 		position = { 0,0 };
 		size = { 0,0 };
 	}

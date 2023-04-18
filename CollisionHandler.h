@@ -34,26 +34,43 @@ namespace Collisions {
                 }
 
                 if (collisionNumber != 0) {
-                    //std::cout << "collision " << collisionNumber << std::endl;
+                    std::cout << "collision " << collisionNumber << std::endl;
                     collisionCount++;
 
                     if (collisionNumber == 3) {
-                        ent1.second->airborne = false;
-                        ent1.second->velocity = { ent1.second->velocity.x, 0 };
-                        ent1.second->acceleration = { 0, 0 };
+                        //std::cout << "collision top" << std::endl;
+                        if ((ent1.second->velocity.y < 0.0f || (GetAsyncKeyState(VK_S)) & 0x8000) && ent2.second->isDropdown()) {
+                            /*if (GetAsyncKeyState(VK_S) & 0x8000) {
+                                ent1.second->velocity.y += 10;
+                            }*/
+                        }
+                        else {
+                            ent1.second->airborne = false;
+                            ent1.second->velocity = { ent1.second->velocity.x, 0 };
+                            ent1.second->acceleration = { 0, 0 };
+                        }
                     }
+                    
                     else if (collisionNumber == 1 || collisionNumber == 2) {
                         ent1.second->airborne = true;
                         ent1.second->velocity = { ent1.second->velocity.x, ent1.second->velocity.y };
                         ent1.second->acceleration = { 0, 9.81f };
                     }
                     else if (collisionNumber == 4) {
-                        ent1.second->airborne = true;
-                        ent1.second->velocity = { ent1.second->velocity.x, -ent1.second->velocity.y * 0.5f };
-                        ent1.second->acceleration = { 0, 9.81f };
+                        if (ent2.second->isDropdown()) {
+
+                        }
+                        else {
+                            ent1.second->airborne = true;
+                            ent1.second->velocity = { ent1.second->velocity.x, -ent1.second->velocity.y * 0.5f };
+                            ent1.second->acceleration = { 0, 9.81f };
+                        }
                     }
 
-                    physics::resolveCollision(*ent2.second, *ent1.second, collisionNumber);
+                    if (!ent2.second->isDropdown()) {
+                         physics::resolveCollision(*ent2.second, *ent1.second, collisionNumber);
+                    }
+                   
 
                     //apply upwards force to player equal to negative acceleration
                 }
@@ -62,6 +79,8 @@ namespace Collisions {
                 ent1.second->acceleration = { 0, 9.81f };
             }
         }
+
+
 
         collisionCount = 0;
         // AI -> Platform Collisions
@@ -79,13 +98,14 @@ namespace Collisions {
                 }
 
                 if (collisionNumber != 0) {
-                    std::cout << "collision " << collisionNumber << std::endl;
+                    //std::cout << "collision " << collisionNumber << std::endl;
                     collisionCount++;
 
                     if (collisionNumber == 3) {
                         ent1.second->airborne = false;
                         ent1.second->velocity = { ent1.second->velocity.x, 0 };
                         ent1.second->acceleration = { 0, 0 };
+                        
                     }
                     else if (collisionNumber == 1 || collisionNumber == 2) {
                         ent1.second->airborne = true;
@@ -96,6 +116,7 @@ namespace Collisions {
                         ent1.second->airborne = true;
                         ent1.second->velocity = { ent1.second->velocity.x, -ent1.second->velocity.y * 0.5f };
                         ent1.second->acceleration = { 0, 9.81f };
+                        
                     }
 
                     std::cout << physics::resolveCollision(*ent2.second, *ent1.second, collisionNumber) << std::endl;

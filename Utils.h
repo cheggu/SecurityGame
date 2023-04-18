@@ -4,6 +4,12 @@
 
 std::vector<int> idlist = {};
 
+unsigned int generateID() {
+    auto id = idlist.size();//generateRandomNumberRange(100, 1000);
+    idlist.push_back(id);
+    return id;
+}
+
 unsigned int generateRandomNumberRange(int min, int max) {
     start:
     std::random_device rd;  // Seed for the random number generator

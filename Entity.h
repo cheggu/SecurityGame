@@ -16,7 +16,9 @@ public:
 	float health = -1;
 
 	Entity() {
-		id = generateRandomNumberRange(100, 1000);
+
+		id = generateID();
+		
 		
 		
 		position = { 0,0 };

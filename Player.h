@@ -47,7 +47,7 @@ public:
 		velocity = { 0,0 };
 		acceleration = { 0, 9.81f };
 		enttype = PLAYER;
-		id = 0;
+		id = generateID();
 		shape.setPosition(position);
 		drawable = &shape;
 		drawable->setFillColor(sf::Color::Transparent);
@@ -183,7 +183,13 @@ public:
 
 		currentXDirection = determineXDirection();
 		currentYDirection = determineYDirection();
-		view.setCenter({ position.x, HEIGHT / 2 });
+		if (position.y > 1000) {
+			view.setCenter({ position.x, HEIGHT / 2 });
+		}
+		else {
+			view.setCenter({ position.x, position.y - (HEIGHT / 3) });
+		}
+		
 		window.setView(view);
 	}
 

@@ -41,6 +41,12 @@ int main()
     UIToolboxHelper::createToolbox();
     UIInventoryHelper::createInventory();
 
+
+    auto tempDropdownPlatform = sf::RectangleShape({ 300, 10 });
+    tempDropdownPlatform.setPosition(860, 850);
+    
+    PlatformHelper::createDropdownPlatform(tempDropdownPlatform);
+
     sf::Clock fpsclock;
     fpsclock.restart();
     sf::Text fpsctr;
@@ -103,7 +109,9 @@ int main()
         physics::dt = currentTime * 10;
         int fps = 1.0f / currentTime;
 
-        fpsctr.setString("X" + std::to_string(PlayerHelper::list.at(playerid)->position.x) + " Y" + std::to_string(PlayerHelper::list.at(playerid)->position.y));
+        auto pixelpos = sf::Mouse::getPosition(window);
+        auto coordpos = window.mapPixelToCoords(pixelpos);
+        fpsctr.setString("X" + std::to_string(coordpos.x) + " Y" + std::to_string(coordpos.y));
 
         simulate();
 

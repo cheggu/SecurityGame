@@ -37,7 +37,7 @@ public:
 	
 
 	AIEntity() {
-		id = generateRandomNumberRange(100, 199);
+		id = generateID();
 		position = { 0,0 };
 		velocity = { 0,0 };
 		acceleration = { 0, 9.81f };
@@ -49,7 +49,7 @@ public:
 	}
 
 	AIEntity(sf::Vector2f pos, sf::RectangleShape& shape) {
-		id = generateRandomNumberRange(100, 199);
+		id = generateID();
 		position = pos;
 		velocity = { 0,0 };
 		acceleration = { 0, 9.81f };

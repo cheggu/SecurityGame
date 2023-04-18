@@ -13,7 +13,7 @@ public:
 	sf::Vector2f size;
 
 	BaseObject() {
-		id = generateRandomNumberRange(1501, 2000);
+		id = generateID();
 		position = { 0,0 };
 		size = { 0,0 };
 	}

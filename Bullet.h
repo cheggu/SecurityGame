@@ -28,7 +28,7 @@ public:
 	}
 
 	Bullet(sf::Vector2f origin, sf::Vector2f destination) {
-		id = generateRandomNumberRange(200, 999);
+		id = generateID();
 
 		enttype = PROJECTILE;
 		std::cout << "new bullet" << std::endl;

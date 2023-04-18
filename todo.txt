@@ -1,0 +1,34 @@
+
+finish map design										1 hour
+add cryptography puzzle in the cave area
+finalize map colliders									2 hours
+
+place ladders in progression points						0.5 hours
+
+finalize base object type								2 hours
+
+implement all gizmos / hacking tools					5 hours
+
+design + finalize inventory / item swapping				2 hours
+
+make event flags (collision boxes that flag something)	2 hours
+
+formally design all enemies / bosses					3 hours
+
+fix ai (scalability)									3 hours
+
+program boss fights / unique enemy combat				5 hours
+
+story + text boxes for lore or whatever					2 hours
+
+sfx														3 hours
+
+music (?)												1 hour
+
+finishing touches (playtest, feedback, bugs)
+
+-------------------------------------------------------------------
+
+total est												31.5 hours
+
+est time per day (6 days)								5.25 hours

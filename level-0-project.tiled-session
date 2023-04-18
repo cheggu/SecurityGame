@@ -1,0 +1,45 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "untitled.tmx",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "fileStates": {
+        "cavesofgallet_tiles.tsx": {
+            "scaleInDock": 4,
+            "scaleInEditor": 5.5
+        },
+        "untitled.tmx": {
+            "scale": 1.5,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 138.66666666666663,
+                "y": 1205
+            }
+        }
+    },
+    "last.imagePath": "C:/Users/benja/Desktop",
+    "map.height": 200,
+    "map.lastUsedFormat": "tmx",
+    "map.renderOrder": null,
+    "map.tileHeight": 8,
+    "map.tileWidth": 8,
+    "map.width": 1000,
+    "openFiles": [
+        "cavesofgallet_tiles.tsx",
+        "untitled.tmx"
+    ],
+    "project": "level-0-project.tiled-project",
+    "recentFiles": [
+        "cavesofgallet_tiles.tsx",
+        "untitled.tmx"
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 8,
+        "width": 8
+    }
+}

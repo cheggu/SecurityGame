@@ -1,0 +1,22 @@
+Title: Adversarial Thinker
+
+Story: In a world where technology reigns supreme, you play as a hacker trying to navigate through various levels of computer systems and defeat the bosses who protect them. Your goal is to expose the weaknesses and exploit them to gain access to the inner workings of the systems.
+
+Levels:
+
+Firewall Fortress: Navigate through a maze of firewalls and security protocols to reach the first boss, the Firewall Guardian.
+Encryption Lair: Jump over traps and avoid being detected by security cameras as you make your way through encrypted data to reach the second boss, the Encryption Enforcer.
+Root Domain: Avoid hostile code and malicious software to reach the final boss, the Root Admin, who controls the entire system.
+Bosses:
+
+Firewall Guardian: This boss will use its firewall abilities to block your path and send packets to slow you down.
+Encryption Enforcer: This boss will use its encryption abilities to scramble your movements and scramble the platforms.
+Root Admin: The final boss will use a combination of all security measures to try and stop you from accessing the inner workings of the system.
+Enemy Types:
+
+Firewall Sentry: These enemies patrol the firewall section and will block your path if they see you.
+Encryption Spy: These enemies will try to steal your data and slow you down by encrypting your movements.
+Malicious Software: These enemies will try to infect you with harmful software and slow down your progress.
+Security Camera: These enemies will alert the system if they see you, making it harder to avoid detection.
+Hostile Code: These enemies will actively try to harm you and hinder your progress through the levels.
+This game will challenge players to think adversarially and expose the weaknesses in the system while navigating through challenging platforming levels and defeating powerful bosses.

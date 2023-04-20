@@ -8,6 +8,7 @@ finalize map colliders									2 hours
 place ladders in progression points						0.5 hours
 
 finalize base object type								2 hours
+ * create gates															done
 
 implement all gizmos / hacking tools					5 hours
 

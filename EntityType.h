@@ -5,5 +5,6 @@ enum EntityType {
 	PLAYER,
 	ENEMY,
 	PROJECTILE,
-	AI
+	AI,
+	DROPDOWN
 };

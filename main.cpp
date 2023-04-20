@@ -5,6 +5,7 @@
 #include "map_Base.h"
 #include "ui_Inventory.h"
 
+
 int main()
 {
     Audio::bootstrap();
@@ -19,7 +20,7 @@ int main()
     shape.setPosition(WIDTH / 2, HEIGHT / 2);
 
     // PLAYER CREATION
-    int playerid = PlayerHelper::createPlayer({ WIDTH / 2, HEIGHT / 2 }, shape);
+    int playerid = PlayerHelper::createPlayer({ 5600, -3500 }, shape); //level1     WIDTH / 2, HEIGHT / 2     level2   4315, -1200      level3 5600, -3500
     std::cout << playerid << std::endl;
 
     // CAMERA VIEW
@@ -34,8 +35,14 @@ int main()
 
     Map::load(Map::LEVEL0);
 
+
+    //TEMPORARY - NEEDS TO BE MOVED
+
     LadderObjectHelper::createLadder(14, { 1750, 485 }, { 4,4 }, { 1835, 400 });
-    
+
+
+    ///////////////////////////////
+
     //creating ui
     UIHealthHelper::createHealthBar(*PlayerHelper::list.at(playerid));
     UIToolboxHelper::createToolbox();
@@ -83,8 +90,11 @@ int main()
                 Map::mapSprite.move({ 0, 50 });
             }
             if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::K) {
-                PlayerHelper::list.at(playerid)->hurt(10.0f);// health -= 10.0f;
-
+                //PlayerHelper::list.at(playerid)->hurt(10.0f);// health -= 10.0f;
+                for (auto pair : GateObjectHelper::list) {
+                    auto gate = pair.second;
+                    gate->toggle();
+                }
                 //view.rotate(-10.f);
             }
 
@@ -138,7 +148,10 @@ int main()
         }
 
         for (auto pair : PlatformHelper::list) {
-            window.draw(*pair.second->drawable);
+            if (Cheats::DrawPlatforms) {
+                window.draw(*pair.second->drawable);
+            }
+            
         }
 
         for (auto bullet : BulletHelper::list) {

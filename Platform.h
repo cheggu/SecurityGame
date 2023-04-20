@@ -4,6 +4,7 @@
 class Platform : public Entity {
 private:
 	bool dropdown = false;
+	bool enabled = true;
 
 public:
 	
@@ -24,10 +25,26 @@ public:
 		drawable = &shape;
 		position = shape.getPosition();
 		dropdown = isDropdownPlatform;
+		if (dropdown) {
+			enttype = DROPDOWN;
+		}
+		else {
+			enttype = OBJECT;
+		}
 	}
 
 	bool isDropdown() {
 		return dropdown;
+	}
+
+	bool toggle() {
+		enabled = !enabled;
+		BulletCollisionsEnabled = !BulletCollisionsEnabled;
+		return enabled;
+	}
+
+	bool isEnabled() {
+		return enabled;
 	}
 
 };

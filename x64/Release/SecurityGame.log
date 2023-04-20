@@ -7,6 +7,7 @@ C:\Users\benja\Desktop\SecurityGame\Utils.h(9,24): warning C4267: 'argument': co
 C:\Users\benja\Desktop\SecurityGame\Utils.h(10,14): warning C4267: 'return': conversion from 'size_t' to 'unsigned int', possible loss of data
 C:\Users\benja\Desktop\SecurityGame\Includes.h(4,46): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
 C:\Users\benja\Desktop\SecurityGame\Includes.h(4,39): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
+C:\Users\benja\Desktop\SecurityGame\Cheats.h(10,33): warning C4305: 'initializing': truncation from 'int' to 'float'
 C:\Users\benja\Desktop\SecurityGame\PhysicsSystem.h(5,17): warning C4305: 'initializing': truncation from 'double' to 'float'
 C:\Users\benja\Desktop\SecurityGame\Audio.h(103,24): warning C4244: 'argument': conversion from '_Rep' to 'unsigned int', possible loss of data
           with
@@ -23,7 +24,8 @@ C:\Users\benja\Desktop\SecurityGame\Audio.h(153,24): warning C4244: 'argument': 
           [
               _Rep=__int64
           ]
-C:\Users\benja\Desktop\SecurityGame\Player.h(237,33): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\benja\Desktop\SecurityGame\Player.h(244,33): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\benja\Desktop\SecurityGame\Player.h(274,33): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
 C:\Users\benja\Desktop\SecurityGame\AIEntity.h(172,1): warning C4244: '+=': conversion from 'float' to 'T', possible loss of data
           with
           [
@@ -83,20 +85,84 @@ C:\Users\benja\Desktop\SecurityGame\obj_Ladder.h(37,30): warning C4244: 'argumen
           [
               T=int
           ]
-C:\Users\benja\Desktop\SecurityGame\main.cpp(96,41): warning C4244: '=': conversion from 'T' to 'float', possible loss of data
+C:\Users\benja\Desktop\SecurityGame\obj_Gate.h(38,65): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              T=int
+          ]
+C:\Users\benja\Desktop\SecurityGame\obj_Gate.h(38,48): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              T=int
+          ]
+C:\Users\benja\Desktop\SecurityGame\obj_Gate.h(38,42): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              T=int
+          ]
+C:\Users\benja\Desktop\SecurityGame\obj_Gate.h(38,30): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+          and
+          [
+              T=int
+          ]
+C:\Users\benja\Desktop\SecurityGame\obj_Gate.h(40,40): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+          with
+          [
+              T=int
+          ]
+C:\Users\benja\Desktop\SecurityGame\obj_Gate.h(40,29): warning C4244: 'argument': conversion from 'T' to 'float', possible loss of data
+          with
+          [
+              T=int
+          ]
+C:\Users\benja\Desktop\SecurityGame\obj_Gate.h(41,50): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=int
+          ]
+          and
+          [
+              T=float
+          ]
+C:\Users\benja\Desktop\SecurityGame\obj_Gate.h(41,38): warning C4244: 'argument': conversion from 'T' to 'T', possible loss of data
+          with
+          [
+              T=int
+          ]
+          and
+          [
+              T=float
+          ]
+C:\Users\benja\Desktop\SecurityGame\main.cpp(106,41): warning C4244: '=': conversion from 'T' to 'float', possible loss of data
           with
           [
               T=unsigned int
           ]
-C:\Users\benja\Desktop\SecurityGame\main.cpp(97,42): warning C4244: '=': conversion from 'T' to 'float', possible loss of data
+C:\Users\benja\Desktop\SecurityGame\main.cpp(107,42): warning C4244: '=': conversion from 'T' to 'float', possible loss of data
           with
           [
               T=unsigned int
           ]
-C:\Users\benja\Desktop\SecurityGame\main.cpp(110,17): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\benja\Desktop\SecurityGame\main.cpp(120,17): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
   Generating code
-  1 of 1886 functions (<0.1%) were compiled, the rest were copied from previous compilation.
+  4 of 2043 functions ( 0.2%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    1 functions had inline decision re-evaluated but remain unchanged
+    2 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   SecurityGame.vcxproj -> C:\Users\benja\Desktop\SecurityGame\x64\Release\SecurityGame.exe

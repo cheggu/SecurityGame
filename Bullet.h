@@ -65,14 +65,17 @@ public:
 
 	bool checkForHit() {
 		for (auto ent : EntityHelper::list) {
-			physics::AABB bulletBox = { drawable->getPosition(), drawable->getPosition() + drawable->getSize() };
-			physics::AABB entBox = { ent.second->drawable->getPosition(), ent.second->drawable->getPosition() + ent.second->drawable->getSize() };
-			
-			if (physics::AABBvsAABB(bulletBox, entBox) && this->id != ent.first && ent.second->enttype != PLAYER && ent.second->enttype != PROJECTILE) {
-				std::cout << "bullet hit some shit" <<std::endl;
-				ent.second->damage(10);
-				return true;
+			if (ent.second->enttype != DROPDOWN && ent.second->BulletCollisionsEnabled == true) {
+				physics::AABB bulletBox = { drawable->getPosition(), drawable->getPosition() + drawable->getSize() };
+				physics::AABB entBox = { ent.second->drawable->getPosition(), ent.second->drawable->getPosition() + ent.second->drawable->getSize() };
+
+				if (physics::AABBvsAABB(bulletBox, entBox) && this->id != ent.first && ent.second->enttype != PLAYER && ent.second->enttype != PROJECTILE) {
+					std::cout << "bullet hit some shit" << std::endl;
+					ent.second->damage(10);
+					return true;
+				}
 			}
+			
 		}
 		if (clock.getElapsedTime().asSeconds() > 10) {
 			std::cout << "despawning bullet" << std::endl;

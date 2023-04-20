@@ -164,6 +164,7 @@
     <ClInclude Include="AIEntity.h" />
     <ClInclude Include="Audio.h" />
     <ClInclude Include="bootstrap.h" />
+    <ClInclude Include="Cheats.h" />
     <ClInclude Include="CollisionHandler.h" />
     <ClInclude Include="loop.h" />
     <ClInclude Include="obj_Base.h" />
@@ -182,6 +183,7 @@
     <ClInclude Include="Includes.h" />
     <ClInclude Include="mini_Steganography.h" />
     <ClInclude Include="mini_Vulnerability.h" />
+    <ClInclude Include="obj_Gate.h" />
     <ClInclude Include="obj_Handler.h" />
     <ClInclude Include="obj_Ladder.h" />
     <ClInclude Include="PhysicsSystem.h" />

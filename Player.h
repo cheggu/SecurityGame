@@ -107,14 +107,21 @@ public:
 	}
 
 	void jump() {
-		std::cout << "jump" << std::endl;
+		//std::cout << "jump" << std::endl;
 		acceleration = { 0, 9.81f };
 		airborne = true;
-		velocity.y -= 50;
+
+
+		if (Cheats::SuperJump) {
+			velocity.y -= Cheats::SuperJumpValue;
+		}
+		else {
+			velocity.y -= 50;
+		}
 	}
 
 	void duck() {
-		std::cout << "duck" << std::endl;
+		//std::cout << "duck" << std::endl;
 		drawable->setSize({ defaultSize.x, defaultSize.y - 5 });
 		updateShape();
 		
@@ -262,6 +269,13 @@ namespace PlayerHelper {
 	void simulateAll() {
 		for (auto player : PlayerHelper::list) {
 			auto p = player.second;
+
+			if (Cheats::SuperGun) {
+				p->bulletCooldown = Cheats::SuperGunCooldown;
+			}
+			if (Cheats::GodMode) {
+				p->health = Cheats::GodModeHealth;
+			}
 
 			p->simStep(physics::dt);
 

@@ -3,11 +3,65 @@
 #include <chrono>
 
 std::vector<int> idlist = {};
+sf::Clock lerpClock;
+bool lerping = false;
 
 unsigned int generateID() {
     auto id = idlist.size();//generateRandomNumberRange(100, 1000);
     idlist.push_back(id);
     return id;
+}
+
+float m_round(float var)
+{
+    // we use array of chars to store number
+    // as a string.
+    char str[40];
+
+    // Print in string the value of var
+    // with two decimal point
+    sprintf(str, "%.2f", var);
+
+    // scan string value in var
+    sscanf(str, "%f", &var);
+
+    return var;
+}
+
+char* m_round_str(float var)
+{
+    // we use array of chars to store number
+    // as a string.
+    char str[40];
+
+    // Print in string the value of var
+    // with two decimal point
+    sprintf(str, "%.2f", var);
+
+    // scan string value in var
+    sscanf(str, "%f", &var);
+
+    return str;
+}
+
+//not callable until the millisecond limit has been reached
+float lerp(float milliseconds) {
+    if (!lerping) {
+        lerpClock.restart();
+        lerping = true;
+        return 0;
+    }
+    else {
+        if (lerpClock.getElapsedTime().asMilliseconds() == milliseconds) {
+            lerping = false;
+            return 1;
+        }
+        else {
+            return ((float)lerpClock.getElapsedTime().asMilliseconds() / milliseconds);
+        }
+    }
+    
+    
 }
 
 unsigned int generateRandomNumberRange(int min, int max) {

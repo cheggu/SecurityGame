@@ -4,7 +4,8 @@
 #include "loop.h"
 #include "map_Base.h"
 #include "ui_Inventory.h"
-
+#include "obj_Item.h"
+#include "Inventory.h"
 
 int main()
 {
@@ -20,7 +21,7 @@ int main()
     shape.setPosition(WIDTH / 2, HEIGHT / 2);
 
     // PLAYER CREATION
-    int playerid = PlayerHelper::createPlayer({ 5600, -3500 }, shape); //level1     WIDTH / 2, HEIGHT / 2     level2   4315, -1200      level3 5600, -3500
+    int playerid = PlayerHelper::createPlayer({ WIDTH / 2, HEIGHT / 2 }, shape); //level1     WIDTH / 2, HEIGHT / 2     level2   4315, -1200      level3 5600, -3500      level 4   1820, -3450
     std::cout << playerid << std::endl;
 
     // CAMERA VIEW
@@ -31,17 +32,33 @@ int main()
     uiView.reset(sf::FloatRect(-2000, -2000, WIDTH, HEIGHT));
     uiView.setViewport(sf::FloatRect(0.f, 0.f, 1.f, 1.f));
 
-    AIHelper::createAI(FIREWALLGRUNT, { WIDTH / 4, HEIGHT / 2 });
+    //AIHelper::createAI(FIREWALLGRUNT, { WIDTH / 4, HEIGHT / 2 });
 
     Map::load(Map::LEVEL0);
 
 
-    //TEMPORARY - NEEDS TO BE MOVED
+    //              TEMPORARY - NEEDS TO BE MOVED                      //
 
     LadderObjectHelper::createLadder(14, { 1750, 485 }, { 4,4 }, { 1835, 400 });
 
+    sf::RectangleShape itemShape({ 20,20 });
+    itemShape.setPosition(HEIGHT / 2, WIDTH / 2);
+    
 
-    ///////////////////////////////
+    //std::cout << "equipping: " << Inventory::equipItem(InventoryItem::DOSGUN) << std::endl;
+    //std::cout << "equipped: " << (InventoryItem)Inventory::getEquippedItem() << std::endl;
+
+    //std::cout << "equipping locked item: " << Inventory::equipItem(InventoryItem::BRUTEFORCE) << std::endl;
+    //std::cout << "unlocking item: " << std::endl;
+    //Inventory::unlockItem(InventoryItem::BRUTEFORCE);
+    //std::cout << "equipping unlocked item: " << Inventory::equipItem(InventoryItem::BRUTEFORCE) << std::endl;
+    //std::cout << "equipped: " << (InventoryItem)Inventory::getEquippedItem() << std::endl;
+
+
+    /////////////////////////////////////////////////////////////////////
+
+
+
 
     //creating ui
     UIHealthHelper::createHealthBar(*PlayerHelper::list.at(playerid));
@@ -49,10 +66,10 @@ int main()
     UIInventoryHelper::createInventory();
 
 
-    auto tempDropdownPlatform = sf::RectangleShape({ 300, 10 });
-    tempDropdownPlatform.setPosition(860, 850);
+   // auto tempDropdownPlatform = sf::RectangleShape({ 300, 10 });
+    //tempDropdownPlatform.setPosition(860, 850);
     
-    PlatformHelper::createDropdownPlatform(tempDropdownPlatform);
+    //PlatformHelper::createDropdownPlatform(tempDropdownPlatform);
 
     sf::Clock fpsclock;
     fpsclock.restart();
@@ -66,6 +83,9 @@ int main()
     {
         window.clear(sf::Color(51, 77, 104, 255));
 
+        //std::cout << lerp(5000) << std::endl;
+        
+
         sf::Event event;
         while (window.pollEvent(event))
         {
@@ -76,7 +96,6 @@ int main()
                     player.second->unduck();
                 }
             }
-
             if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Left) {
                 Map::mapSprite.move({ -50, 0 });
             }
@@ -89,16 +108,36 @@ int main()
             if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Down) {
                 Map::mapSprite.move({ 0, 50 });
             }
-            if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::K) {
+            if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::U) {
                 //PlayerHelper::list.at(playerid)->hurt(10.0f);// health -= 10.0f;
                 for (auto pair : GateObjectHelper::list) {
                     auto gate = pair.second;
                     gate->toggle();
                 }
-                //view.rotate(-10.f);
             }
-
-
+            if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::K) {
+                PlayerHelper::list.at(playerid)->hurt(50.0f);// health -= 10.0f;
+            }
+            if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Num1) {
+                if (Inventory::equipItem(InventoryItem::DOSGUN)) {
+                    PlayerHelper::list.at(playerid)->clock.restart();
+                }
+            }
+            if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Num2) {
+                if (Inventory::equipItem(InventoryItem::PORTGUN)) {
+                    PlayerHelper::list.at(playerid)->clock.restart();
+                }
+            }
+            if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Num3) {
+                if (Inventory::equipItem(InventoryItem::CRYPTOGUN)) {
+                    PlayerHelper::list.at(playerid)->clock.restart();
+                }
+            }
+            if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Num4) {
+                if (Inventory::equipItem(InventoryItem::BRUTEFORCE)) {
+                    PlayerHelper::list.at(playerid)->clock.restart();
+                }
+            }
             if (event.type == sf::Event::MouseButtonReleased && event.key.code == sf::Mouse::Left) {
                 UIToolboxHelper::list[0]->mutex = false;
             }
@@ -111,13 +150,22 @@ int main()
 
         }
 
+        if (Cheats::UnlockAllGizmos) {
+            Inventory::unlockItem(DOSGUN);
+            Inventory::unlockItem(PORTGUN);
+            Inventory::unlockItem(CRYPTOGUN);
+            Inventory::unlockItem(BRUTEFORCE);
+        }
+
         if (PlayerHelper::list.at(playerid)->health <= 0.0f) {
             EndCondition = true;
         }
 
         float currentTime = clock.restart().asSeconds();
         physics::dt = currentTime * 10;
-        int fps = 1.0f / currentTime;
+        //int fps = 1.0f / currentTime;
+
+        //std::cout << fps << std::endl;
 
         auto pixelpos = sf::Mouse::getPosition(window);
         auto coordpos = window.mapPixelToCoords(pixelpos);
@@ -139,6 +187,7 @@ int main()
         for (auto player : PlayerHelper::list) {
             window.draw(*player.second->drawable);
             window.draw(player.second->sprite);
+            window.draw(player.second->chargingText);
         }
 
         for (auto AI : AIHelper::list) {
@@ -149,6 +198,8 @@ int main()
 
         for (auto pair : PlatformHelper::list) {
             if (Cheats::DrawPlatforms) {
+                auto color = pair.second->drawable->getFillColor();
+                pair.second->drawable->setFillColor(sf::Color(color.r, color.g, color.b, 128));
                 window.draw(*pair.second->drawable);
             }
             
@@ -168,10 +219,9 @@ int main()
             }
         }
 
-        
-        
-
         // DRAW UI VIEW SECTION
+        UIInventoryHelper::list[0]->update(Inventory::unlockedItemList, Inventory::currentyEquippedItem);
+       
         window.setView(uiView);
         for (auto invIcon : UIInventorySlotHelper::list) {
             auto pixelpos = invIcon.second->getPosition();
@@ -181,6 +231,7 @@ int main()
             invIcon.second->draw();
         }
 
+        
 
         for (auto healthbar : UIHealthHelper::list) {
             healthbar.second->update();

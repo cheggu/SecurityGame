@@ -40,6 +40,12 @@
     <Filter Include="Header Files\Objects">
       <UniqueIdentifier>{2911422e-7cc1-45cc-bc67-1c0c2c0f0024}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Camera">
+      <UniqueIdentifier>{9490d7fb-e081-497b-a803-c65a228546df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Inventory">
+      <UniqueIdentifier>{6c5ac6c0-b770-4e0c-be9a-ceef94eea9cd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -154,6 +160,18 @@
     </ClInclude>
     <ClInclude Include="obj_Gate.h">
       <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Header Files\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="obj_Item.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="obj_Checkpoint.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Inventory.h">
+      <Filter>Header Files\Inventory</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

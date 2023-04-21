@@ -5,6 +5,10 @@
 #include "Includes.h"
 #include "Bullet.h"
 #include "Audio.h"
+#include "Inventory.h"
+#include "Font.h"
+#include <sstream>
+#include <iomanip>
 
 #define VK_D 0x44
 #define VK_S 0x53
@@ -27,6 +31,7 @@ public:
 	bool canShoot = true;
 	sf::Clock clock;
 	int bulletCooldown = 100;
+	sf::Vector2f lastCheckpoint;
 
 	sf::Texture IdleTexture;
 	sf::IntRect IdleRectSourceSprite;
@@ -39,6 +44,8 @@ public:
 
 	sf::Sprite sprite;
 	sf::Clock spriteClock;
+
+	sf::Text chargingText;
 
 	
 
@@ -72,7 +79,10 @@ public:
 
 		sprite = sf::Sprite(IdleTexture, IdleRectSourceSprite);
 
-		
+		chargingText.setFont(Font::emulogic);
+		chargingText.setCharacterSize(8);
+		chargingText.setFillColor(sf::Color::White);
+		chargingText.setString("charging");
 
 		sprite.setScale({ 1.5f,1.5f });
 
@@ -94,15 +104,39 @@ public:
 	}
 
 	void shoot() {
-		if (clock.getElapsedTime() > sf::milliseconds(bulletCooldown)) {
-			//BulletHelper::createBullet(face, position);
+		switch (Inventory::currentyEquippedItem) {
+		case InventoryItem::DOSGUN:
+			bulletCooldown = 100;
+			break;
+		case InventoryItem::PORTGUN:
+			bulletCooldown = 3000;
+			break;
+		case InventoryItem::CRYPTOGUN:
+			bulletCooldown = 5000;
+			break;
+		case InventoryItem::BRUTEFORCE:
+			bulletCooldown = 20000;
+			break;
+		}
 
+		//unlockText.setPosition(rect.left + (rect.width / 2.0f) - (unlockText.getGlobalBounds().width / 2.f), rect.top - 20);
+		chargingText.setPosition(position.x - (chargingText.getGlobalBounds().width / 2), position.y + 50);
+
+		chargingText.setString((std::string)m_round_str(clock.getElapsedTime() / sf::milliseconds(bulletCooldown) * 100) + "%");
+
+		
+		if (clock.getElapsedTime() > sf::milliseconds(bulletCooldown)) {
 			auto pixelpos = sf::Mouse::getPosition(window);
 			BulletHelper::createAngledBullet(position, window.mapPixelToCoords(pixelpos));
 
 			playGunshot();
 
 			clock.restart();
+		}
+		else {
+			if (Inventory::currentyEquippedItem != InventoryItem::DOSGUN) {
+				chargingText.setFillColor(sf::Color::White);
+			}
 		}
 	}
 
@@ -133,6 +167,12 @@ public:
 	}
 
 	void move() {
+		chargingText.setFillColor(sf::Color::Transparent);
+
+		if (Cheats::SuperSpeed) {
+			default_speed = Cheats::SuperSpeedValue;
+		}
+
 
 		velocity.x = 0;
 		if (GetAsyncKeyState(VK_SHIFT) && canSprint) {
@@ -190,14 +230,6 @@ public:
 
 		currentXDirection = determineXDirection();
 		currentYDirection = determineYDirection();
-		if (position.y > 1000) {
-			view.setCenter({ position.x, HEIGHT / 2 });
-		}
-		else {
-			view.setCenter({ position.x, position.y - (HEIGHT / 3) });
-		}
-		
-		window.setView(view);
 	}
 
 	direction determineXDirection() {
@@ -250,6 +282,11 @@ public:
 			sprite.setScale({ -1.5f, 1.5f });
 			sprite.setPosition(sprite.getPosition().x + sprite.getGlobalBounds().width, sprite.getPosition().y);
 		}
+	}
+
+	void reset() {
+		setPos(lastCheckpoint);
+		health = 100.f;
 	}
 
 };

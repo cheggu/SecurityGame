@@ -2,17 +2,36 @@
 finish map design										1 hour			DONE
  * add cryptography puzzle in the cave area								
 
-finalize map colliders									2 hours
+finalize map colliders									2 hours			DONE
  * create dropdown platforms											done
 
-place ladders in progression points						0.5 hours
+place ladders in progression points						0.5 hours		DONE
 
-finalize base object type								2 hours
+finalize base object type								2 hours			DONE
  * create gates															done
 
-implement all gizmos / hacking tools					5 hours
+design all gizmos / hacking tools						2 hours			DONE
+ * DOS-GUN 9001															done
+	-basic weapon
+	-"denial of service" gun, does basic damage
 
-design + finalize inventory / item swapping				2 hours
+ * port scanner															done
+	-discover secret paths
+	-find weak spots for boss 1 (firewall)
+
+ * cryptogun															done
+	-used to distract enemies
+	-useful for boss 2 (brain)
+
+ * brute force gun														done
+	-used to break down doors
+	-used to break the shield of the final boss
+
+
+implement all gizmos									5 hours	
+
+
+design + finalize inventory / item swapping				2 hours			DONE
 
 make event flags (collision boxes that flag something)	2 hours
 

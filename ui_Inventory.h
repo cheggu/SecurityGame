@@ -4,11 +4,10 @@
 #include "Includes.h"
 
 enum InventoryItem {
-	HANDS,
-	BLASTER,
-	SCANNER,
-	DISGUISER,
-	DDOS
+	DOSGUN,
+	PORTGUN,
+	CRYPTOGUN,
+	BRUTEFORCE
 };
 
 class InventorySlot : public uiElement {
@@ -31,7 +30,15 @@ public:
 		
 		Texture.loadFromImage(icon);
 		Icon.setTexture(Texture);
+		if (item == BRUTEFORCE) {
+			Icon.setScale(2, 2);
+		}
+		else {
+			Icon.setScale(4, 4);
+		}
 		Icon.setPosition(position);
+
+		Item = item;
 
 		drawableList[0] = &OuterBox;
 		drawableList[1] = &Icon;
@@ -49,6 +56,14 @@ public:
 
 	sf::Vector2f getPosition() {
 		return OuterBox.getPosition();
+	}
+
+	void select() {
+		OuterBox.setOutlineColor(sf::Color::Green);
+	}
+
+	void unselect() {
+		OuterBox.setOutlineColor(sf::Color(0x4d46245a));
 	}
 
 };
@@ -76,7 +91,7 @@ public:
 		LOCKED
 	};
 
-	std::map <InventorySlot, InventoryItemStatus> Inventory = {};
+	//std::map <InventorySlot, InventoryItemStatus> Inventory = {};
 
 	InventoryUIElement() {
 		//create 6 inv slots, positioning accordingly
@@ -84,29 +99,55 @@ public:
 		//image0.loadFromFile("Content\\Sprites\\Icons\\testicon.png");
 		image0.loadFromFile("Content\\Sprites\\Icons\\blaster.png");
 
-		UIInventorySlotHelper::createInventorySlot(image0, { (WIDTH / 3) - 2000, 15 - 2000 }, InventoryItem::HANDS);
-		UIInventorySlotHelper::createInventorySlot(image0, { (WIDTH / 3) + 115 - 2000, 15 - 2000 }, InventoryItem::HANDS);
-		UIInventorySlotHelper::createInventorySlot(image0, { (WIDTH / 3) + 230 - 2000, 15 - 2000 }, InventoryItem::HANDS);
-		UIInventorySlotHelper::createInventorySlot(image0, { (WIDTH / 3) + 345 - 2000, 15 - 2000 }, InventoryItem::HANDS);
-		UIInventorySlotHelper::createInventorySlot(image0, { (WIDTH / 3) + 460 - 2000, 15 - 2000 }, InventoryItem::HANDS);
-		UIInventorySlotHelper::createInventorySlot(image0, { (WIDTH / 3) + 575 - 2000, 15 - 2000 }, InventoryItem::HANDS);
+		sf::Image image1;
+		image1.loadFromFile("Content\\Sprites\\Icons\\scanner.png");
+
+		sf::Image image2;
+		image2.loadFromFile("Content\\Sprites\\Icons\\crypto.png");
+
+		sf::Image image3;
+		image3.loadFromFile("Content\\Sprites\\Icons\\brute.png");
+		
+
+		UIInventorySlotHelper::createInventorySlot(image0, { (WIDTH / 2) - 230 - 2000, 15 - 2000 }, InventoryItem::DOSGUN);
+		UIInventorySlotHelper::createInventorySlot(image1, { (WIDTH / 2) - 115 - 2000, 15 - 2000 }, InventoryItem::PORTGUN);
+		UIInventorySlotHelper::createInventorySlot(image2, { (WIDTH / 2) - 2000, 15 - 2000 }, InventoryItem::CRYPTOGUN);
+		UIInventorySlotHelper::createInventorySlot(image3, { (WIDTH / 2) + 115 - 2000, 15 - 2000 }, InventoryItem::BRUTEFORCE);
+		//UIInventorySlotHelper::createInventorySlot(image0, { (WIDTH / 3) + 460 - 2000, 15 - 2000 }, InventoryItem::HANDS);
+		//UIInventorySlotHelper::createInventorySlot(image0, { (WIDTH / 3) + 575 - 2000, 15 - 2000 }, InventoryItem::HANDS);
 	}
 
-	void update() {
-		for (auto pair : Inventory) {
+	void update(std::map<InventoryItem, bool> inventoryFromHandler, InventoryItem currentlyEquippedItem) {
+		for (auto pair : inventoryFromHandler) {
 			auto item = pair.first;
-			auto status = pair.second;
+			auto unlocked = pair.second;
 
-			if (status == EQUIPPED) {
-				//highlight slot
-			}
-			else if (status == LOCKED) {
-				//do not draw icon
-			}
-			else { //cooldowned or stored
-				//unhighlight
+			for (auto i : UIInventorySlotHelper::list) {
+				auto l_item = i.second->Item;
+				
+				if (item == l_item) {
+					if (!unlocked) {
+						((sf::Sprite*)(i.second->drawableList.at(1)))->setColor(sf::Color::Transparent);
+					}
+					else {
+						((sf::Sprite*)(i.second->drawableList.at(1)))->setColor(sf::Color::White);
+					}
+				}
+
 			}
 		}
+
+		for (auto pair : UIInventorySlotHelper::list) {
+			auto slot = pair.second;
+
+			if (slot->Item == currentlyEquippedItem) {
+				slot->select();
+			}
+			else {
+				slot->unselect();
+			}
+		}
+
 	}
 };
 

@@ -34,7 +34,7 @@ public:
 		std::cout << "new bullet" << std::endl;
 		drawable = new sf::RectangleShape();
 		drawable->setFillColor(sf::Color::Red);
-		drawable->setSize({ 10, 5 });
+		drawable->setSize({ 5, 5 });
 
 		velocity = destination - origin;
 		float slope = velocity.y / velocity.x;

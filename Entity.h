@@ -8,6 +8,7 @@
 class Entity {
 public:
 	sf::RectangleShape* drawable;
+	
 	int id;
 	EntityType enttype;
 	bool BulletCollisionsEnabled = true;

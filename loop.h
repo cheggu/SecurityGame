@@ -22,20 +22,23 @@
 
 #include "Font.h"
 
+#include "Camera.h"
+
 
 
 //handles collisions and movement
 void simulate() {
-    
-    if (!EndCondition) {
-        Collisions::simulateAll();
-        AIHelper::simulateAll();
-        PlayerHelper::simulateAll();
-        ObjectHandler::simulateAll();
-    }
-    else {
-        Collisions::simulateAll();
-        
+    Collisions::simulateAll();
+    AIHelper::simulateAll();
+    PlayerHelper::simulateAll();
+    Camera::update(physics::dt); //0.003
+    ObjectHandler::simulateAll();
+    if (EndCondition) {
+        for (auto pair : PlayerHelper::list) {
+            auto p = pair.second;
+            p->reset(); 
+        }
+        EndCondition = false;
     }
 
 

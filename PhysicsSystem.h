@@ -22,7 +22,7 @@ namespace physics {
 	}
 
 	void apply_gravity_to_ent(Entity& ent) {
-		ent.velocity = { ent.velocity.x, ent.velocity.y + (dt * 9.81f) };
+		ent.velocity = { ent.velocity.x, ent.velocity.y + (dt * 9.81f)};
 		ent.position = { ent.position.x + (ent.velocity.x * dt), ent.position.y + (ent.velocity.y * dt) };
 	}
 

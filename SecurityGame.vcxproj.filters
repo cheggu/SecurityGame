@@ -46,6 +46,9 @@
     <Filter Include="Header Files\Inventory">
       <UniqueIdentifier>{6c5ac6c0-b770-4e0c-be9a-ceef94eea9cd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Bosses">
+      <UniqueIdentifier>{f30cf4b3-7c4b-4c78-96bf-e7676076d64a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -172,6 +175,18 @@
     </ClInclude>
     <ClInclude Include="Inventory.h">
       <Filter>Header Files\Inventory</Filter>
+    </ClInclude>
+    <ClInclude Include="obj_InvisibleLayer.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="obj_Character.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="FirewallMonster.h">
+      <Filter>Header Files\Bosses</Filter>
+    </ClInclude>
+    <ClInclude Include="BossHandler.h">
+      <Filter>Header Files\Bosses</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -6,4 +6,7 @@ bool EndCondition = false;
 sf::View view;
 sf::View uiView;
 
+int playerid;
+int boss01id;
+
 #include "Cheats.h"

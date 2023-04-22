@@ -3,16 +3,6 @@
 #include "Font.h"
 #include <iostream>
 
-enum EntityID {
-	FIREWALLGRUNT,
-	FIREWALLBOSS,
-	STALKERGRUNT,
-	HACKERGRUNT,
-	BRAINBOSS
-
-};
-
-
 class AIEntity : public Entity {
 public:
 	bool airborne = false;

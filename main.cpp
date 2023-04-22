@@ -39,21 +39,7 @@ int main()
 
     //              TEMPORARY - NEEDS TO BE MOVED                      //
 
-    LadderObjectHelper::createLadder(14, { 1750, 485 }, { 4,4 }, { 1835, 400 });
-
-    sf::RectangleShape itemShape({ 20,20 });
-    itemShape.setPosition(HEIGHT / 2, WIDTH / 2);
     
-
-    //std::cout << "equipping: " << Inventory::equipItem(InventoryItem::DOSGUN) << std::endl;
-    //std::cout << "equipped: " << (InventoryItem)Inventory::getEquippedItem() << std::endl;
-
-    //std::cout << "equipping locked item: " << Inventory::equipItem(InventoryItem::BRUTEFORCE) << std::endl;
-    //std::cout << "unlocking item: " << std::endl;
-    //Inventory::unlockItem(InventoryItem::BRUTEFORCE);
-    //std::cout << "equipping unlocked item: " << Inventory::equipItem(InventoryItem::BRUTEFORCE) << std::endl;
-    //std::cout << "equipped: " << (InventoryItem)Inventory::getEquippedItem() << std::endl;
-
 
     /////////////////////////////////////////////////////////////////////
 
@@ -184,11 +170,34 @@ int main()
 
         }
 
+        for (auto pair : InvisLayerHelper::list) {
+            auto layer = pair.second;
+
+            window.draw(layer->getSprite());
+        }
+
         for (auto player : PlayerHelper::list) {
             window.draw(*player.second->drawable);
             window.draw(player.second->sprite);
             window.draw(player.second->chargingText);
+            window.draw(player.second->scannerCircle);
         }
+
+        if (!BossEvent::boss01.isDead()) {
+            for (auto pair : BossEvent::boss01.drawableList) {
+                auto sprite = pair.second;
+
+                window.draw(*sprite);
+            }
+        }
+        
+
+        if (BossEvent::drawBossHealthbar) {
+            window.draw(BossEvent::healthbar_outer);
+            window.draw(BossEvent::healthbar_inner);
+            window.draw(BossEvent::boss_name);
+        }
+        
 
         for (auto AI : AIHelper::list) {
             window.draw(*AI.second->drawable);
@@ -205,17 +214,26 @@ int main()
             
         }
 
-        for (auto bullet : BulletHelper::list) {
-            if (!bullet.second->checkForHit()) {
-                bullet.second->simStep(physics::dt);
-                window.draw(*bullet.second->drawable);
+        for (auto pair : BulletHelper::list) {
+            auto bullet = pair.second;
+
+            //std::cout << bullet->clock.getElapsedTime().asSeconds() << std::endl;
+
+            bool isColliding = bullet->checkForHit();
+
+            if (!isColliding) {
+                bullet->simStep(physics::dt);
+                window.draw(*bullet->drawable);
+            }
+            else if (isColliding && bullet->doPersist && bullet->clock.getElapsedTime().asSeconds() < bullet->doPersistTime) {
+                window.draw(*bullet->drawable);
             }
             else {
-                BulletHelper::list.erase(bullet.second->id);
+                BulletHelper::list.erase(bullet->id);
             }
 
-            if (bullet.second->clock.getElapsedTime() > sf::seconds(10)) {
-                BulletHelper::list.erase(bullet.second->id);
+            if ((!bullet->doPersist && bullet->clock.getElapsedTime() > sf::seconds(10)) || (bullet->doPersist && bullet->clock.getElapsedTime().asSeconds() > bullet->doPersistTime)) {
+                BulletHelper::list.erase(bullet->id);
             }
         }
 

@@ -5,6 +5,15 @@
 
 #include <SFML/Graphics.hpp>
 
+enum EntityID {
+	FIREWALLGRUNT,
+	FIREWALLBOSS,
+	STALKERGRUNT,
+	HACKERGRUNT,
+	BRAINBOSS
+
+};
+
 class Entity {
 public:
 	sf::RectangleShape* drawable;
@@ -16,6 +25,9 @@ public:
 	sf::Vector2f velocity;
 	sf::Vector2f acceleration;
 	float health = -1;
+
+	direction bossside00;
+
 
 	Entity() {
 

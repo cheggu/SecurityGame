@@ -33,6 +33,19 @@ namespace Audio {
     sf::SoundBuffer buf_player_fall_0_1;
     sf::Sound sound_player_fall_0_1;
 
+    sf::SoundBuffer buf_firewall_attack_0;
+    sf::Sound sound_firewall_attack_0;
+
+    sf::SoundBuffer buf_firewall_attack_1;
+    sf::Sound sound_firewall_attack_1;
+
+    sf::SoundBuffer buf_firewall_attack_2;
+    sf::Sound sound_firewall_attack_2;
+
+    sf::SoundBuffer buf_firewall_death;
+    sf::Sound sound_firewall_death;
+
+
     void bootstrap() {
         if (!buf_laser_00.loadFromFile("Content/Audio/Blaster/laser_00.ogg")) {
             std::cout << "bad sound" << std::endl;
@@ -84,6 +97,25 @@ namespace Audio {
         }
         sound_player_fall_0_1.setBuffer(buf_player_fall_0_1);
 
+        if (!buf_firewall_attack_0.loadFromFile("Content/Audio/Firewall/attack_01.ogg")) {
+            std::cout << "bad sound" << std::endl;
+        }
+        sound_firewall_attack_0.setBuffer(buf_firewall_attack_0);
+
+        if (!buf_firewall_attack_1.loadFromFile("Content/Audio/Firewall/attack_02.ogg")) {
+            std::cout << "bad sound" << std::endl;
+        }
+        sound_firewall_attack_1.setBuffer(buf_firewall_attack_1);
+
+        if (!buf_firewall_attack_2.loadFromFile("Content/Audio/Firewall/attack_03.ogg")) {
+            std::cout << "bad sound" << std::endl;
+        }
+        sound_firewall_attack_2.setBuffer(buf_firewall_attack_2);
+
+        if (!buf_firewall_death.loadFromFile("Content/Audio/Firewall/death.ogg")) {
+            std::cout << "bad sound" << std::endl;
+        }
+        sound_firewall_death.setBuffer(buf_firewall_death);
 
 
     }
@@ -162,4 +194,32 @@ void playPlayerFall() {
         Audio::sound_player_fall_0_1.play();
         break;
     }
+}
+
+void playFirewallAttack() {
+    using namespace std::chrono;
+    milliseconds ms = duration_cast<milliseconds>(
+        system_clock::now().time_since_epoch()
+        );
+
+
+    std::srand(ms.count()); //std::time(nullptr)
+    // Generate a random number between 0 and 3
+    int random_number = std::rand() % 3;
+
+    switch (random_number) {
+    case 0:
+        Audio::sound_firewall_attack_0.play();
+        break;
+    case 1:
+        Audio::sound_firewall_attack_1.play();
+        break;
+    case 2:
+        Audio::sound_firewall_attack_2.play();
+        break;
+    }
+}
+
+void playFirewallDeath() {
+    Audio::sound_firewall_death.play();
 }

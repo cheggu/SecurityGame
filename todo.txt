@@ -28,22 +28,32 @@ design all gizmos / hacking tools						2 hours			DONE
 	-used to break the shield of the final boss
 
 
-implement all gizmos									5 hours	
+implement all gizmos									5 hours			DONE
 
 
 design + finalize inventory / item swapping				2 hours			DONE
 
-make event flags (collision boxes that flag something)	2 hours
+make world objects										2 hours			DONE
+
+bird puzzle												3 hours			wip	
 
 formally design all enemies / bosses					3 hours
+ * firewall																DONE
 
-fix ai (scalability)									3 hours
+ * brain
+
+ * final boss
 
 program boss fights / unique enemy combat				5 hours
+ * firewall																done
+
+ * brain
+ 
+ * final boss
 
 story + text boxes for lore or whatever					2 hours
 
-sfx														3 hours
+sfx														3 hours			wip
 
 music (?)												1 hour
 

@@ -7,6 +7,8 @@
 class Bullet : public Entity {
 public:
 	sf::Clock clock;
+	bool doPersist = false;
+	int doPersistTime = 0;
 
 	Bullet(direction direction, sf::Vector2f origin) {
 		enttype = PROJECTILE;
@@ -62,6 +64,79 @@ public:
 		clock.restart();
 	}
 
+	Bullet(sf::Vector2f origin, sf::Vector2f destination, sf::RectangleShape _drawable) {
+		id = generateID();
+
+		enttype = PROJECTILE;
+		std::cout << "new bullet" << std::endl;
+		drawable = new sf::RectangleShape(_drawable);
+		/*drawable->setFillColor(sf::Color::Red);
+		drawable->setSize({ 5, 5 });*/
+
+		velocity = destination - origin;
+		float slope = velocity.y / velocity.x;
+		position = origin;
+
+		auto theta = atan(velocity.y / velocity.x);
+
+		auto vx = 1.0f, vy = 1.0f;
+
+		if (destination.x < origin.x) {
+			theta *= -1;
+		}
+
+		vx = 100.0f * cos(theta);
+		vy = 100.0f * sin(theta);
+
+		if (destination.x < origin.x) {
+			vx *= -1;
+		}
+
+		acceleration = { 0, 2 };
+
+		velocity = { vx,vy };
+
+		clock.restart();
+	}
+
+	Bullet(sf::Vector2f origin, sf::Vector2f destination, sf::RectangleShape _drawable, int persistTime) {
+		id = generateID();
+
+		enttype = PROJECTILE;
+		std::cout << "new bullet" << std::endl;
+		drawable = new sf::RectangleShape(_drawable);
+		/*drawable->setFillColor(sf::Color::Red);
+		drawable->setSize({ 5, 5 });*/
+
+		doPersist = true;
+		doPersistTime = persistTime;
+
+		velocity = destination - origin;
+		float slope = velocity.y / velocity.x;
+		position = origin;
+
+		auto theta = atan(velocity.y / velocity.x);
+
+		auto vx = 1.0f, vy = 1.0f;
+
+		if (destination.x < origin.x) {
+			theta *= -1;
+		}
+
+		vx = 100.0f * cos(theta);
+		vy = 100.0f * sin(theta);
+
+		if (destination.x < origin.x) {
+			vx *= -1;
+		}
+
+		acceleration = { 0, 2 };
+
+		velocity = { vx,vy };
+
+		clock.restart();
+	}
+
 
 	bool checkForHit() {
 		for (auto ent : EntityHelper::list) {
@@ -71,7 +146,19 @@ public:
 
 				if (physics::AABBvsAABB(bulletBox, entBox) && this->id != ent.first && ent.second->enttype != PLAYER && ent.second->enttype != PROJECTILE) {
 					std::cout << "bullet hit some shit" << std::endl;
-					ent.second->damage(10);
+
+					int damage = 1;
+
+					if (ent.second->id == boss01id) {
+						auto collision = physics::handleCollision(*drawable, *ent.second->drawable); 
+						if ((ent.second->bossside00 == LEFT && collision == 2) || (ent.second->bossside00 == RIGHT && collision == 1)) {
+							damage *= 15;
+						}
+
+						std::cout << collision << std::endl;
+					}
+
+					ent.second->damage(damage);
 					return true;
 				}
 			}
@@ -119,6 +206,24 @@ namespace BulletHelper {
 
 	int createAngledBullet(sf::Vector2f origin, sf::Vector2f destination) {
 		auto tempEnt = new Bullet(origin, destination);
+
+		EntityHelper::list[tempEnt->id] = tempEnt;
+		list[tempEnt->id] = tempEnt;
+
+		return tempEnt->id;
+	}
+
+	int createCustomAngledBullet(sf::Vector2f origin, sf::Vector2f destination, sf::RectangleShape drawable) {
+		auto tempEnt = new Bullet(origin, destination, drawable);
+
+		EntityHelper::list[tempEnt->id] = tempEnt;
+		list[tempEnt->id] = tempEnt;
+
+		return tempEnt->id;
+	}
+
+	int createCustomAngledBullet(sf::Vector2f origin, sf::Vector2f destination, sf::RectangleShape drawable, int persistTime) {
+		auto tempEnt = new Bullet(origin, destination, drawable, persistTime);
 
 		EntityHelper::list[tempEnt->id] = tempEnt;
 		list[tempEnt->id] = tempEnt;

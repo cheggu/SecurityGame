@@ -10,6 +10,7 @@ private:
 	sf::Vector2f position;
 	sf::Sprite sprite;
 	sf::Text pickupText;
+	InventoryItem item_id;
 
 public:
 	Item() {
@@ -17,9 +18,10 @@ public:
 		sprite = sf::Sprite();
 	}
 
-	Item(sf::Vector2f _position, sf::Sprite _sprite) {
+	Item(sf::Vector2f _position, sf::Sprite _sprite, InventoryItem item) {
 		position = _position;
 		sprite = _sprite;
+		item_id = item;
 
 		sprite.setPosition(position);
 
@@ -58,10 +60,9 @@ public:
 	}
 
 	void interact() {
-		for (auto pair : PlayerHelper::list) {
-			//auto p = pair.second;
-			//p->setPos(teleportLocation);
-		}
+		Inventory::unlockItem(item_id);
+		sprite.setColor(sf::Color::Transparent);
+		pickupText.setFillColor(sf::Color::Transparent);
 	}
 
 	void setScale(sf::Vector2f scale) {
@@ -82,8 +83,8 @@ public:
 namespace ItemHelper {
 	std::map<int, Item*> list;
 
-	int createItem(sf::Vector2f position, sf::Sprite sprite) {
-		auto tempEnt = new Item(position, sprite);
+	int createItem(sf::Vector2f position, sf::Sprite sprite, InventoryItem item_id) {
+		auto tempEnt = new Item(position, sprite, item_id);
 
 		list[tempEnt->id] = tempEnt;
 		BaseObjectHelper::list[tempEnt->id] = tempEnt;

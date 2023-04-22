@@ -3,6 +3,8 @@
 #include "obj_Ladder.h"
 #include "obj_Item.h"
 #include "obj_Checkpoint.h"
+#include "obj_InvisibleLayer.h"
+#include "obj_Character.h"
 
 namespace ObjectHandler {
 
@@ -24,5 +26,12 @@ namespace ObjectHandler {
 
 			checkpoint->simulate();
 		}
+
+		for (auto pair : CharacterHelper::list) {
+			auto character = pair.second;
+
+			character->simulate();
+		}
+		
 	}
 }

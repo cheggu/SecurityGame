@@ -9,6 +9,8 @@
 #include "Font.h"
 #include <sstream>
 #include <iomanip>
+#include "Platform.h"
+#include "obj_InvisibleLayer.h"
 
 #define VK_D 0x44
 #define VK_S 0x53
@@ -30,6 +32,7 @@ public:
 	bool isRunning = false;
 	bool canShoot = true;
 	sf::Clock clock;
+	sf::Clock hurtCooldown;
 	int bulletCooldown = 100;
 	sf::Vector2f lastCheckpoint;
 
@@ -47,6 +50,9 @@ public:
 
 	sf::Text chargingText;
 
+	sf::CircleShape scannerCircle;
+	bool doImpulse = false;
+	sf::Clock impulseClock;
 	
 
 	Player(sf::Vector2f pos, sf::RectangleShape& shape) {
@@ -84,6 +90,12 @@ public:
 		chargingText.setFillColor(sf::Color::White);
 		chargingText.setString("charging");
 
+		scannerCircle.setFillColor(sf::Color::Transparent);
+		scannerCircle.setOutlineColor(sf::Color::White);
+		scannerCircle.setOutlineThickness(3);
+		scannerCircle.setRadius(1);
+		scannerCircle.setPosition(position);
+
 		sprite.setScale({ 1.5f,1.5f });
 
 		defaultSize = drawable->getSize();
@@ -92,15 +104,34 @@ public:
 	direction currentXDirection;
 	direction currentYDirection;
 
-	// 0 none
-	// 1 left
-	// 2 right
-	// 3 up
-	// 4 down
-
 	void hurt(float amount) {
 		health -= amount;
 		playPlayerHurt();
+	}
+
+	void impulse() {
+		if (doImpulse) {
+			scannerCircle.setOutlineColor(sf::Color::White);
+			scannerCircle.setRadius(scannerCircle.getRadius() + physics::dt * 100);
+			scannerCircle.setPosition(position.x - scannerCircle.getRadius(), position.y - scannerCircle.getRadius());
+
+			if (scannerCircle.getRadius() > 1000) {
+				scannerCircle.setRadius(0);
+				doImpulse = false;
+			}
+
+			for (auto pair : InvisLayerHelper::list) {
+				auto layer = pair.second;
+				layer->disable();
+			}
+		}
+		else {
+			scannerCircle.setOutlineColor(sf::Color::Transparent);
+			for (auto pair : InvisLayerHelper::list) {
+				auto layer = pair.second;
+				layer->enable();
+			}
+		}
 	}
 
 	void shoot() {
@@ -109,7 +140,7 @@ public:
 			bulletCooldown = 100;
 			break;
 		case InventoryItem::PORTGUN:
-			bulletCooldown = 3000;
+			bulletCooldown = 2000;
 			break;
 		case InventoryItem::CRYPTOGUN:
 			bulletCooldown = 5000;
@@ -127,7 +158,26 @@ public:
 		
 		if (clock.getElapsedTime() > sf::milliseconds(bulletCooldown)) {
 			auto pixelpos = sf::Mouse::getPosition(window);
-			BulletHelper::createAngledBullet(position, window.mapPixelToCoords(pixelpos));
+			
+			if (Inventory::currentyEquippedItem == InventoryItem::CRYPTOGUN) {
+				sf::RectangleShape tempRect;
+				tempRect.setFillColor(sf::Color::Green);
+				tempRect.setSize({ 10,10 });
+				BulletHelper::createCustomAngledBullet(position, window.mapPixelToCoords(pixelpos), tempRect, 5);
+			}
+			else if (Inventory::currentyEquippedItem == InventoryItem::BRUTEFORCE) {
+				sf::RectangleShape tempRect;
+				tempRect.setFillColor(sf::Color(0xFF760DFF));
+				tempRect.setSize({ 25,25 });
+				BulletHelper::createCustomAngledBullet({ position.x, position.y - 25 }, window.mapPixelToCoords(pixelpos), tempRect);
+			}
+			else if (Inventory::currentyEquippedItem == InventoryItem::PORTGUN) {
+				doImpulse = true;
+				impulseClock.restart();
+			}
+			else {
+				BulletHelper::createAngledBullet(position, window.mapPixelToCoords(pixelpos));
+			}
 
 			playGunshot();
 
@@ -137,6 +187,7 @@ public:
 			if (Inventory::currentyEquippedItem != InventoryItem::DOSGUN) {
 				chargingText.setFillColor(sf::Color::White);
 			}
+			//doImpulse = false;
 		}
 	}
 
@@ -320,6 +371,11 @@ namespace PlayerHelper {
 			auto dif = pos - sf::Vector2f(WIDTH / 2, HEIGHT / 2);
 
 			p->move();
+
+			p->impulse();
+			if (p->impulseClock.getElapsedTime().asSeconds() > 5) {
+				p->doImpulse = false;
+			}
 
 			if (p->airborne) {
 				//std::cout << p->velocity.y << std::endl;

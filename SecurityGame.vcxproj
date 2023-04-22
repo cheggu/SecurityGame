@@ -164,7 +164,10 @@
     <ClInclude Include="AIEntity.h" />
     <ClInclude Include="Audio.h" />
     <ClInclude Include="bootstrap.h" />
+    <ClInclude Include="BossHandler.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="FirewallMonster.h" />
+    <ClInclude Include="obj_Character.h" />
     <ClInclude Include="Cheats.h" />
     <ClInclude Include="Inventory.h" />
     <ClInclude Include="obj_Checkpoint.h" />
@@ -188,6 +191,7 @@
     <ClInclude Include="mini_Vulnerability.h" />
     <ClInclude Include="obj_Gate.h" />
     <ClInclude Include="obj_Handler.h" />
+    <ClInclude Include="obj_InvisibleLayer.h" />
     <ClInclude Include="obj_Item.h" />
     <ClInclude Include="obj_Ladder.h" />
     <ClInclude Include="PhysicsSystem.h" />

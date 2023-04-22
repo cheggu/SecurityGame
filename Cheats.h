@@ -13,6 +13,6 @@ namespace Cheats {
 	bool SuperSpeed = false;
 	float SuperSpeedValue = 30.0f; //default 15.0f
 
-	bool UnlockAllGizmos = true;
+	bool UnlockAllGizmos = false;
 
 }

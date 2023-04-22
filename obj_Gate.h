@@ -65,6 +65,20 @@ public:
 
 		return enabled;
 	}
+
+	void enable() {
+		enabled = true;
+		PlatformHelper::list.at(platformID)->enable();
+	}
+
+	void disable() {
+		enabled = false;
+		PlatformHelper::list.at(platformID)->disable();
+	}
+
+	void disableBullets() {
+		PlatformHelper::list.at(platformID)->BulletCollisionsEnabled = false;
+	}
 };
 
 namespace GateObjectHelper {

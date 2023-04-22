@@ -21,6 +21,10 @@
 
 #include "Font.h"
 
+#include "obj_Item.h"
+#include "obj_InvisibleLayer.h"
+#include "obj_Character.h"
+
 namespace Map {
 	enum maps {
 		LEVEL0,
@@ -180,6 +184,21 @@ namespace Map {
 	int gate_boss_03_right;
 
 
+	sf::Texture txtr_scanner;
+	sf::Sprite sprite_scanner;
+
+	sf::Texture txtr_crypto;
+	sf::Sprite sprite_crypto;
+
+	sf::Texture txtr_brute;
+	sf::Sprite sprite_brute;
+
+	sf::Texture txtr_bird_00;
+	sf::Sprite sprite_bird_00;
+
+
+
+
 	sf::Texture texture;
 	sf::Sprite mapSprite;
 	
@@ -200,11 +219,11 @@ namespace Map {
 				mapSprite.move(-325, -4934);
 
 
-					// floor0
-					
+				// floor0
+
 				floor00.setPosition(0, HEIGHT - 158);
 				std::cout << PlatformHelper::createPlatform(floor00) << std::endl;
-;
+				;
 				floor01.setPosition(2580, HEIGHT - 158);
 				std::cout << PlatformHelper::createPlatform(floor01) << std::endl;
 
@@ -309,7 +328,7 @@ namespace Map {
 				//2030, -3335
 				floor33.setPosition(2030, -3335);
 				PlatformHelper::createPlatform(floor33);
-				
+
 				//2000, -3367
 				floor34.setPosition(2000, -3367);
 				PlatformHelper::createPlatform(floor34);
@@ -339,7 +358,7 @@ namespace Map {
 				floor42.setPosition(795, -1222);
 				PlatformHelper::createPlatform(floor42);
 
-				
+
 				floor43.setPosition(764, -1190);
 				PlatformHelper::createPlatform(floor43);
 
@@ -422,7 +441,7 @@ namespace Map {
 				//2619 -233
 				platform05.setPosition(2619, -233);
 				PlatformHelper::createDropdownPlatform(platform05);
-				 
+
 				//2939 -327
 				platform06.setPosition(2939, -327);
 				PlatformHelper::createDropdownPlatform(platform06);
@@ -517,7 +536,7 @@ namespace Map {
 
 				platform28.setPosition(1050, -3367);
 				PlatformHelper::createDropdownPlatform(platform28);
-				
+
 				platform29.setPosition(1146, -1895);
 				PlatformHelper::createDropdownPlatform(platform29);
 
@@ -539,10 +558,32 @@ namespace Map {
 				platform35.setPosition(1466, -3174);
 				PlatformHelper::createDropdownPlatform(platform35);
 
+				InvisLayerHelper::createInvisibleLayer({ 2000, 180, 270, 48 });
+				InvisLayerHelper::createInvisibleLayer({ 2133,83,300,48 });
+				InvisLayerHelper::createInvisibleLayer({ 2360,-45,270,48 });
+				InvisLayerHelper::createInvisibleLayer({ 2422,-143,270,48 });
+				InvisLayerHelper::createInvisibleLayer({ 2613,-240,300,48 });
+				InvisLayerHelper::createInvisibleLayer({ 2937,-336,330,48 });
+
+				InvisLayerHelper::createInvisibleLayer({ 3443,-370,240,48 });
+				InvisLayerHelper::createInvisibleLayer({ 3827,-434,300,48 });
+				InvisLayerHelper::createInvisibleLayer({ 4209,-466,210,48 });
+				InvisLayerHelper::createInvisibleLayer({ 4524,-468,310,48 });
+				InvisLayerHelper::createInvisibleLayer({ 4951,-458,420,48 });
+				InvisLayerHelper::createInvisibleLayer({ 5302,-559,300,48 });
+				InvisLayerHelper::createInvisibleLayer({ 4917,-623,300,48 });
+				InvisLayerHelper::createInvisibleLayer({ 4406,-688,400,48 });
+				InvisLayerHelper::createInvisibleLayer({ 3956,-691,330,48 });
+				InvisLayerHelper::createInvisibleLayer({ 3446,-689,390,48 });
+				InvisLayerHelper::createInvisibleLayer({ 3063,-786,330,48 });
+				InvisLayerHelper::createInvisibleLayer({ 3222,-880,196,48 });
 
 
 				gate_boss_01_left = GateObjectHelper::createGate(48, { 3420, -2400 }, { 4,4 });
 				gate_boss_01_right = GateObjectHelper::createGate(48, { 5040, -2400 }, { 4,4 });
+
+				GateObjectHelper::list[gate_boss_01_left]->disable();
+
 
 				gate_boss_02_left = GateObjectHelper::createGate(10, { 2529, -3574 }, { 4,4 });
 				gate_boss_02_right = GateObjectHelper::createGate(3, { 4800, -3526 }, { 4,4 });
@@ -550,6 +591,7 @@ namespace Map {
 				gate_boss_03_left = GateObjectHelper::createGate(4, { 1866, 794 }, { 4,4 });
 				gate_boss_03_right = GateObjectHelper::createGate(10, { 4876, 600 }, { 4,4 });
 
+				LadderObjectHelper::createLadder(14, { 1750, 485 }, { 4,4 }, { 1835, 400 });
 				LadderObjectHelper::createLadder(80, { 5340, -3430 }, { 4,4 }, { 5275, -3500 });
 				LadderObjectHelper::createLadder(10, { 283, -1119 }, { 4,4 }, { -54, 600 });
 
@@ -559,9 +601,44 @@ namespace Map {
 				CheckpointHelper::createCheckpoint(sf::FloatRect({ 1811, -3437 }, { 64, 48 }));
 				CheckpointHelper::createCheckpoint(sf::FloatRect({ 2197, 887 }, { 64, 48 }));
 
+
+
+				if (!txtr_scanner.loadFromFile("Content\\Sprites\\Icons\\scanner-item.png")) {
+					std::cout << "error with world item: scanner" << std::endl;
 				}
+				sprite_scanner.setTexture(txtr_scanner);
+				ItemHelper::createItem({ 2456, 220 }, sprite_scanner, PORTGUN);
+
+
+				if (!txtr_crypto.loadFromFile("Content\\Sprites\\Icons\\crypto-item.png")) {
+					std::cout << "error with world item: crypto" << std::endl;
+				}
+				sprite_crypto.setTexture(txtr_crypto);
+				ItemHelper::createItem({ 8290, -3490 }, sprite_crypto, CRYPTOGUN);
+
+
+				if (!txtr_brute.loadFromFile("Content\\Sprites\\Icons\\brute-item.png")) {
+					std::cout << "error with world item: brute" << std::endl;
+				}
+				sprite_brute.setTexture(txtr_brute);
+				ItemHelper::createItem({ 451, -1107 }, sprite_brute, BRUTEFORCE);
+
+
+
+				if (!txtr_bird_00.loadFromFile("Content\\Sprites\\Icons\\testicon.png")) {
+					std::cout << "error with character: bird00" << std::endl;
+				}
+				sprite_bird_00.setTexture(txtr_bird_00);
+				CharacterHelper::createCharacter({ WIDTH / 2, HEIGHT / 2 + 300 }, sprite_bird_00);
+
+
+
+
+
+			}
 			break;
 		}
+		
 		return true;
 	}
 	

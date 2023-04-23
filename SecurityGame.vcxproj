@@ -165,6 +165,7 @@
     <ClInclude Include="Audio.h" />
     <ClInclude Include="bootstrap.h" />
     <ClInclude Include="BossHandler.h" />
+    <ClInclude Include="BrainMonster.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="FirewallMonster.h" />
     <ClInclude Include="obj_Character.h" />
@@ -180,15 +181,9 @@
     <ClInclude Include="FirewallGrunt.h" />
     <ClInclude Include="map_Base.h" />
     <ClInclude Include="map_Reader.h" />
-    <ClInclude Include="mini_Analysis.h" />
-    <ClInclude Include="mini_Base.h" />
-    <ClInclude Include="mini_CrackPW.h" />
-    <ClInclude Include="mini_Encryption.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityType.h" />
     <ClInclude Include="Includes.h" />
-    <ClInclude Include="mini_Steganography.h" />
-    <ClInclude Include="mini_Vulnerability.h" />
     <ClInclude Include="obj_Gate.h" />
     <ClInclude Include="obj_Handler.h" />
     <ClInclude Include="obj_InvisibleLayer.h" />

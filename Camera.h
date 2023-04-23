@@ -13,8 +13,14 @@ namespace Camera {
 			if (player->position.y > 1000) {
 				target = { player->position.x, HEIGHT / 2 };
 			}
-			else if (player->position.x > 2100 && player->position.x < 4756 && player->position.y > -3600 && player->position.y < -3240) {
+			else if (player->position.x > 2100 && player->position.x < 4756 && player->position.y > -3600 && player->position.y < -3240) { //3904 4756
 				target = { player->position.x, (player->position.y - (HEIGHT / 5)) };
+
+				if (player->position.x < 3946) { 
+					BossEvent::BossFight_02();
+				}
+				
+
 			}
 			else if (player->position.x > 1050 && player->position.x < 1657 && player->position.y > -3723 && player->position.y < -1616) {
 				target = { player->position.x, (player->position.y - (HEIGHT / 6)) };
@@ -26,7 +32,8 @@ namespace Camera {
 					auto layer = pair.second;
 					layer->disable();
 				}
-				BossEvent::BossFight_00();
+				BossEvent::BossFight_01();
+				
 			}
 			//else if (player->position.x > 4889 && player->position.x < 7104 && player->position.y > 606 && player->position.y < 921) {
 			//}

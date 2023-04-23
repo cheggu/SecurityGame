@@ -24,6 +24,7 @@ private:
 	sf::Clock targetClock;
 
 	bool dead = true;
+	bool mutex = false;
 
 
 public:
@@ -199,7 +200,7 @@ public:
 
 	void nextMove() {
 		if (health > 0) {
-			if (targetClock.getElapsedTime().asSeconds() > 10) {
+			if (targetClock.getElapsedTime().asSeconds() > 7) {
 				
 				if (side == LEFT) {
 					sweepRight();
@@ -228,7 +229,7 @@ public:
 					physics::AABB bossbox = { position, position + drawable->getSize() };
 
 					if (physics::AABBvsAABB(playerbox, bossbox)) {
-						player->hurt(10);
+						player->hurt(20);
 					}
 					player->hurtCooldown.restart();
 				}
@@ -238,7 +239,10 @@ public:
 			
 		}
 		else {
-			
+			if (!mutex) {
+				playFirewallDeath();
+			}
+			mutex = true;
 			auto pixelpos = window.mapPixelToCoords({ (int)WIDTH / 2, (int)HEIGHT + 500 });
 			sf::Vector2f movement = (pixelpos - position);
 			sprite.move(movement * (physics::dt * .05f));
@@ -256,9 +260,6 @@ public:
 	}
 
 	void die() {
-		if (!dead) {
-			playFirewallDeath();
-		}
 		dead = true;
 	}
 

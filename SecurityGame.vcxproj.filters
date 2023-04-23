@@ -25,9 +25,6 @@
     <Filter Include="Header Files\UI">
       <UniqueIdentifier>{14d5fb79-65d8-46d8-9b31-63bcbb775e8c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Minigame">
-      <UniqueIdentifier>{4d5ef94b-1e63-4773-a8fd-38893063be30}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Map">
       <UniqueIdentifier>{140d86b6-e66b-41d8-a74a-6fd9b0026b4a}</UniqueIdentifier>
     </Filter>
@@ -85,24 +82,6 @@
     </ClInclude>
     <ClInclude Include="ui_Element.h">
       <Filter>Header Files\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="mini_Encryption.h">
-      <Filter>Header Files\Minigame</Filter>
-    </ClInclude>
-    <ClInclude Include="mini_Vulnerability.h">
-      <Filter>Header Files\Minigame</Filter>
-    </ClInclude>
-    <ClInclude Include="mini_Analysis.h">
-      <Filter>Header Files\Minigame</Filter>
-    </ClInclude>
-    <ClInclude Include="mini_CrackPW.h">
-      <Filter>Header Files\Minigame</Filter>
-    </ClInclude>
-    <ClInclude Include="mini_Steganography.h">
-      <Filter>Header Files\Minigame</Filter>
-    </ClInclude>
-    <ClInclude Include="mini_Base.h">
-      <Filter>Header Files\Minigame</Filter>
     </ClInclude>
     <ClInclude Include="ui_Button.h">
       <Filter>Header Files\UI</Filter>
@@ -186,6 +165,9 @@
       <Filter>Header Files\Bosses</Filter>
     </ClInclude>
     <ClInclude Include="BossHandler.h">
+      <Filter>Header Files\Bosses</Filter>
+    </ClInclude>
+    <ClInclude Include="BrainMonster.h">
       <Filter>Header Files\Bosses</Filter>
     </ClInclude>
   </ItemGroup>

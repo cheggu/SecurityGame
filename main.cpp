@@ -4,25 +4,21 @@
 #include "loop.h"
 #include "map_Base.h"
 #include "ui_Inventory.h"
-#include "obj_Item.h"
 #include "Inventory.h"
 
 int main()
 {
+    // CREATING PLAYER VARIABLES
+
+
+    // PLAYER CREATION
+    int playerid = PlayerHelper::createPlayer({ 390, 800 }); //level1    390, 800     level2   4315, -1200      level3 5600, -3500      level 4   1820, -3450       brain  3197, -3453
+    std::cout << "playerid" << playerid << std::endl;
+
     Audio::bootstrap();
     Font::bootstrap();
 
-
     sf::Clock clock;
-
-    // CREATING PLAYER VARIABLES
-    sf::RectangleShape shape({ 10.f, 20.f });
-    shape.setFillColor(sf::Color::Green);
-    shape.setPosition(WIDTH / 2, HEIGHT / 2);
-
-    // PLAYER CREATION
-    int playerid = PlayerHelper::createPlayer({ WIDTH / 2, HEIGHT / 2 }, shape); //level1     WIDTH / 2, HEIGHT / 2     level2   4315, -1200      level3 5600, -3500      level 4   1820, -3450
-    std::cout << playerid << std::endl;
 
     // CAMERA VIEW
     view.reset(sf::FloatRect(0, 0, WIDTH, HEIGHT));
@@ -190,6 +186,14 @@ int main()
                 window.draw(*sprite);
             }
         }
+
+        if (!BossEvent::boss02.isDead()) {
+            for (auto pair : BossEvent::boss02.drawableList) {
+                auto sprite = pair.second;
+
+                window.draw(*sprite);
+            }
+        }
         
 
         if (BossEvent::drawBossHealthbar) {
@@ -220,6 +224,10 @@ int main()
             //std::cout << bullet->clock.getElapsedTime().asSeconds() << std::endl;
 
             bool isColliding = bullet->checkForHit();
+            if (signalPlayerHit && !BossEvent::boss02.isDead()) {
+                BossEvent::boss02.hurtPlayer(10.f);
+                signalPlayerHit = false;
+            }
 
             if (!isColliding) {
                 bullet->simStep(physics::dt);

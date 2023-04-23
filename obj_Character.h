@@ -3,17 +3,52 @@
 #include "Player.h"
 #include "Font.h"
 
+enum character {
+	bird0,
+	bird1,
+	bird2
+};
+
+sf::FileInputStream riddle0file;
+sf::FileInputStream riddle1file;
+sf::FileInputStream riddle2file;
+
+//rot13 helloworld uryybjbeyq
+std::vector<std::string> bird0_dialogue = { "hello, i am lord confidencius", "i am a keeper of the sacred relic of cryptus",
+										   "solve our ciphers to earn your prize", "my cipher is located at\n/Content/Ciphers/cipher0.txt\nin the game files",
+											"write your answer and save the document,\nand talk to me when you've solved it.", "my cipher is 'uryybjbeyq' and my hint is \n'a=n'" };
+
+//caeser cryptography fubswrjudskb
+std::vector<std::string> bird1_dialogue = { "hello, i am lord integrius", "i am a keeper of the sacred relic of cryptus",
+											"solve our ciphers to earn your prize", "my cipher is located at\n/Content/Ciphers/cipher1.txt\nin the game files",
+											"write your answer and save the document,\nand talk to me when you've solved it.", "my cipher is 'fubswrjudskb' and my hint is \n'a=d'\n'b=e\n'c=f'" };
+
+//atbash security hvxfirgb
+std::vector<std::string> bird2_dialogue = { "hello, i am lord availabilitus", "i am a keeper of the sacred relic of cryptus", 
+											"solve our ciphers to earn your prize", "my cipher is located at\n/Content/Ciphers/cipher2.txt\nin the game files",
+											"write your answer and save the document,\nand talk to me when you've solved it.", "my cipher is 'hvxfirgb' and my hint is \n'a=z'\n'b=y'\n'c=x'" };
+
+
 class Character : public BaseObject {
 
 private:
+	char riddle0attempt[10], riddle1attempt[12], riddle2attempt[8];
 	sf::IntRect rect;
 	sf::Vector2f position;
 	sf::Sprite sprite;
-	sf::Text interactText;
+	
 	sf::Clock skipDialogueClock;
 	float minSkipDialogueAmount = 0.5f;
+	sf::Clock readclock;
+	sf::Text interactText;
+	int dialogue_counter;
+	bool cipher_solved;
 
 public:
+	
+	character _character;
+	bool isQuestGiver = false;
+
 	Character() {
 		position = { 0,0 };
 		sprite = sf::Sprite();
@@ -36,9 +71,15 @@ public:
 		drawableList[1] = &interactText;
 	}
 
-	Character(sf::Vector2f _position, sf::Sprite _sprite) {
+	Character(sf::Vector2f _position, sf::Sprite _sprite, character c) {
 		position = _position;
 		sprite = _sprite;
+
+		_character = c;
+		
+		riddle0file.open("Content/Ciphers/cipher0.txt");
+		riddle1file.open("Content/Ciphers/cipher1.txt");
+		riddle2file.open("Content/Ciphers/cipher2.txt");
 
 		sprite.setPosition(position);
 
@@ -72,14 +113,92 @@ public:
 					return true;
 				}
 			}
+			if (abs(p->position.x - position.x) > 300 || abs(p->position.y - position.y) > 300) {
+				interactText.setString("e - talk");
+				interactText.setPosition(sprite.getPosition().x + 30, sprite.getPosition().y - (interactText.getGlobalBounds().height) - 10);
+			}
 		}
 		return false;
 	}
 
+	bool isCipherSolved() {
+		return cipher_solved;
+	}
+
+	void updateText(std::string text) {
+		interactText.setString(text);
+		interactText.setPosition(sprite.getPosition().x + 30, sprite.getPosition().y - (interactText.getGlobalBounds().height) - 10);
+	}
+
 	void interact() {
 		if (skipDialogueClock.getElapsedTime().asSeconds() > minSkipDialogueAmount) {
-			interactText.setString("TESTESTESTESTESTESTESTESTESdsadsadsad\nasdasdasdasdasdTESTEST!" + std::to_string(generateRandomNumber()));
-			interactText.setPosition(sprite.getPosition().x + (sprite.getGlobalBounds().width / 2.0f) - (interactText.getGlobalBounds().width / 4.f), sprite.getPosition().y - 20);
+			std::cout << _character << std::endl;
+
+			
+			memset(riddle0attempt, 0, sizeof riddle0attempt);
+			memset(riddle1attempt, 0, sizeof riddle1attempt);
+			memset(riddle2attempt, 0, sizeof riddle2attempt);
+
+			memset(&riddle0file, 0, sizeof riddle0file);
+			memset(&riddle1file, 0, sizeof riddle1file);
+			memset(&riddle2file, 0, sizeof riddle2file);
+
+			riddle0file.open("Content/Ciphers/cipher0.txt");
+			riddle1file.open("Content/Ciphers/cipher1.txt");
+			riddle2file.open("Content/Ciphers/cipher2.txt");
+
+			switch (_character) {
+			case bird0:
+				isQuestGiver = true;
+				interactText.setString(bird0_dialogue.at(dialogue_counter));
+
+				if (dialogue_counter == bird0_dialogue.size() - 1) {
+					riddle0file.read(riddle0attempt, 11);
+
+					std::cout << riddle0attempt << std::endl;
+
+					if (strcmp(riddle0attempt, "helloworld") == 0) {
+						cipher_solved = true;
+					}
+				}
+				else {
+					dialogue_counter++;
+				}
+				break;
+			case bird1:
+				isQuestGiver = true;
+				interactText.setString(bird1_dialogue.at(dialogue_counter));
+
+				if (dialogue_counter == bird1_dialogue.size() - 1) {
+					riddle1file.read(riddle1attempt, 13);
+					if (strcmp(riddle1attempt, "cryptography") == 0) {
+						cipher_solved = true;
+					}
+				}
+				else {
+					dialogue_counter++;
+				}
+				break;
+			case bird2:
+				isQuestGiver = true;
+				interactText.setString(bird2_dialogue.at(dialogue_counter));
+
+				if (dialogue_counter == bird2_dialogue.size() - 1) {
+					riddle2file.read(riddle2attempt, 8);
+
+					std::cout << riddle2attempt << std::endl;
+
+					if (strcmp(riddle2attempt, "security") == 0) {
+						cipher_solved = true;
+					}
+				}
+				else {
+					dialogue_counter++;
+				}
+				break;
+			}
+			
+			interactText.setPosition(sprite.getPosition().x - (interactText.getGlobalBounds().width / 4), sprite.getPosition().y -(interactText.getGlobalBounds().height) - 10);
 			skipDialogueClock.restart();
 		}
 	}
@@ -102,8 +221,8 @@ public:
 namespace CharacterHelper {
 	std::map<int, Character*> list;
 
-	int createCharacter(sf::Vector2f position, sf::Sprite sprite) {
-		auto tempEnt = new Character(position, sprite);
+	int createCharacter(sf::Vector2f position, sf::Sprite sprite, character c) {
+		auto tempEnt = new Character(position, sprite, c);
 
 		list[tempEnt->id] = tempEnt;
 		BaseObjectHelper::list[tempEnt->id] = tempEnt;

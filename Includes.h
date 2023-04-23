@@ -8,5 +8,8 @@ sf::View uiView;
 
 int playerid;
 int boss01id;
+int boss02id;
+
+bool signalPlayerHit = false;
 
 #include "Cheats.h"

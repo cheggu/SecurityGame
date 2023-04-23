@@ -14,8 +14,6 @@
 #include "ui_Button.h"
 #include "ui_Toolbox.h"
 
-#include "mini_Base.h"
-
 #include "obj_Handler.h"
 #include "obj_Base.h"
 #include "obj_Ladder.h"
@@ -24,19 +22,26 @@
 
 #include "Camera.h"
 
-
-
 //handles collisions and movement
 void simulate() {
-    Collisions::simulateAll();
-    AIHelper::simulateAll();
-    PlayerHelper::simulateAll();
-    Camera::update(physics::dt); //0.003
-    ObjectHandler::simulateAll();
+
+    if (sf::IntRect({ 0, 0, (int)WIDTH, (int)HEIGHT }).contains(sf::Mouse::getPosition(window))) {
+        Collisions::simulateAll();
+        AIHelper::simulateAll();
+        PlayerHelper::simulateAll();
+        Camera::update(physics::dt); //0.003
+        ObjectHandler::simulateAll();
+    }
+    
     if (EndCondition) {
         for (auto pair : PlayerHelper::list) {
             auto p = pair.second;
             p->reset(); 
+            BossEvent::boss01.health = BossEvent::boss01.maxHealth;
+            BossEvent::boss02.health = BossEvent::boss02.maxHealth;
+
+            GateObjectHelper::list[Map::gate_boss_02_rightright]->disable();
+
         }
         EndCondition = false;
     }

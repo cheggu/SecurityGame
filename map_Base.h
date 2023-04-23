@@ -17,8 +17,6 @@
 #include "obj_Gate.h"
 #include "obj_Checkpoint.h"
 
-#include "mini_Base.h"
-
 #include "Font.h"
 
 #include "obj_Item.h"
@@ -175,13 +173,14 @@ namespace Map {
 	sf::RectangleShape platform1337({ 1000, 10 });
 
 	
-	int gate_castle;
 	int gate_boss_01_left;
 	int gate_boss_01_right;
 	int gate_boss_02_left;
 	int gate_boss_02_right;
+	int gate_boss_02_rightright;
 	int gate_boss_03_left;
 	int gate_boss_03_right;
+	int gate_crypto_puzzle;
 
 
 	sf::Texture txtr_scanner;
@@ -195,7 +194,8 @@ namespace Map {
 
 	sf::Texture txtr_bird_00;
 	sf::Sprite sprite_bird_00;
-
+	sf::Sprite sprite_bird_01;
+	sf::Sprite sprite_bird_02;
 
 
 
@@ -587,6 +587,12 @@ namespace Map {
 
 				gate_boss_02_left = GateObjectHelper::createGate(10, { 2529, -3574 }, { 4,4 });
 				gate_boss_02_right = GateObjectHelper::createGate(3, { 4800, -3526 }, { 4,4 });
+				gate_boss_02_rightright = GateObjectHelper::createGate(10, { 3940, -3574 }, { 4,4 });
+
+				GateObjectHelper::list[gate_boss_02_rightright]->disable();
+
+
+				gate_crypto_puzzle = GateObjectHelper::createGate(5, { 8219,-3590 }, { 4,4 });
 
 				gate_boss_03_left = GateObjectHelper::createGate(4, { 1866, 794 }, { 4,4 });
 				gate_boss_03_right = GateObjectHelper::createGate(10, { 4876, 600 }, { 4,4 });
@@ -629,10 +635,19 @@ namespace Map {
 					std::cout << "error with character: bird00" << std::endl;
 				}
 				sprite_bird_00.setTexture(txtr_bird_00);
-				CharacterHelper::createCharacter({ WIDTH / 2, HEIGHT / 2 + 300 }, sprite_bird_00);
+				sprite_bird_00.setColor(sf::Color::Transparent);
+				sprite_bird_00.setTextureRect({ 0,0,96,96 });
+				CharacterHelper::createCharacter({ 6900, -3530 }, sprite_bird_00, bird0); //6925
 
+				sprite_bird_01.setTexture(txtr_bird_00);
+				sprite_bird_01.setColor(sf::Color::Transparent);
+				sprite_bird_01.setTextureRect({ 0,0,96,96 });
+				CharacterHelper::createCharacter({ 7375, -3530 }, sprite_bird_01, bird1); //7400
 
-
+				sprite_bird_02.setTexture(txtr_bird_00);
+				sprite_bird_02.setColor(sf::Color::Transparent);
+				sprite_bird_02.setTextureRect({ 0,0,96,96 });
+				CharacterHelper::createCharacter({ 7825, -3530 }, sprite_bird_02, bird2); //7850
 
 
 			}

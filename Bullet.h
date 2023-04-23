@@ -9,6 +9,8 @@ public:
 	sf::Clock clock;
 	bool doPersist = false;
 	int doPersistTime = 0;
+	bool hasOwner;
+	int ownerID;
 
 	Bullet(direction direction, sf::Vector2f origin) {
 		enttype = PROJECTILE;
@@ -137,18 +139,64 @@ public:
 		clock.restart();
 	}
 
+	Bullet(sf::Vector2f origin, sf::Vector2f destination, sf::RectangleShape _drawable, bool owned, int owner) {
+		id = generateID();
+
+		enttype = PROJECTILE;
+		std::cout << "new bullet" << std::endl;
+		drawable = new sf::RectangleShape(_drawable);
+		/*drawable->setFillColor(sf::Color::Red);
+		drawable->setSize({ 5, 5 });*/
+
+		hasOwner = true;
+		ownerID = owner;
+
+		velocity = destination - origin;
+		float slope = velocity.y / velocity.x;
+		position = origin;
+
+		auto theta = atan(velocity.y / velocity.x);
+
+		auto vx = 1.0f, vy = 1.0f;
+
+		if (destination.x < origin.x) {
+			theta *= -1;
+		}
+
+		vx = 100.0f * cos(theta);
+		vy = 100.0f * sin(theta);
+
+		if (destination.x < origin.x) {
+			vx *= -1;
+		}
+
+		acceleration = { 0, 2 };
+
+		velocity = { vx,vy };
+
+		clock.restart();
+	}
+
 
 	bool checkForHit() {
 		for (auto ent : EntityHelper::list) {
-			if (ent.second->enttype != DROPDOWN && ent.second->BulletCollisionsEnabled == true) {
+			if (ent.second->enttype != DROPDOWN && ent.second->BulletCollisionsEnabled == true) { // && ent.second->id != 1
 				physics::AABB bulletBox = { drawable->getPosition(), drawable->getPosition() + drawable->getSize() };
 				physics::AABB entBox = { ent.second->drawable->getPosition(), ent.second->drawable->getPosition() + ent.second->drawable->getSize() };
 
-				if (physics::AABBvsAABB(bulletBox, entBox) && this->id != ent.first && ent.second->enttype != PLAYER && ent.second->enttype != PROJECTILE) {
-					std::cout << "bullet hit some shit" << std::endl;
+				if (physics::AABBvsAABB(bulletBox, entBox) && this->id != ent.first && (ent.second->enttype != PLAYER || (ent.second->enttype == PLAYER && hasOwner)) && ent.second->enttype != PROJECTILE) {
+					float damage = 1;
 
-					int damage = 1;
+					if (ent.second->enttype == PLAYER) {
+						std::cout << "hitplayer" << std::endl;
+						signalPlayerHit = true;
+						return true;
+					}
 
+					if (hasOwner && ownerID == ent.second->id) {
+						damage = 0;
+					}
+					
 					if (ent.second->id == boss01id) {
 						auto collision = physics::handleCollision(*drawable, *ent.second->drawable); 
 						if ((ent.second->bossside00 == LEFT && collision == 2) || (ent.second->bossside00 == RIGHT && collision == 1)) {
@@ -156,6 +204,11 @@ public:
 						}
 
 						std::cout << collision << std::endl;
+					}
+					if (ent.second->id == boss02id) {
+						if (doPersist) {
+							damage *= 0.05;
+						}
 					}
 
 					ent.second->damage(damage);
@@ -165,7 +218,6 @@ public:
 			
 		}
 		if (clock.getElapsedTime().asSeconds() > 10) {
-			std::cout << "despawning bullet" << std::endl;
 			return true;
 		}
 		return false;
@@ -224,6 +276,15 @@ namespace BulletHelper {
 
 	int createCustomAngledBullet(sf::Vector2f origin, sf::Vector2f destination, sf::RectangleShape drawable, int persistTime) {
 		auto tempEnt = new Bullet(origin, destination, drawable, persistTime);
+
+		EntityHelper::list[tempEnt->id] = tempEnt;
+		list[tempEnt->id] = tempEnt;
+
+		return tempEnt->id;
+	}
+
+	int createCustomAngledBullet(sf::Vector2f origin, sf::Vector2f destination, sf::RectangleShape drawable, bool hasOwner, int ownerID) {
+		auto tempEnt = new Bullet(origin, destination, drawable, hasOwner, ownerID);
 
 		EntityHelper::list[tempEnt->id] = tempEnt;
 		list[tempEnt->id] = tempEnt;

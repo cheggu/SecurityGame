@@ -5,8 +5,11 @@
 #include "obj_Checkpoint.h"
 #include "obj_InvisibleLayer.h"
 #include "obj_Character.h"
+#include "map_Base.h"
 
 namespace ObjectHandler {
+
+	bool riddle0, riddle1, riddle2;
 
 	void simulateAll() {
 		for (auto pair : LadderObjectHelper::list) {
@@ -31,6 +34,26 @@ namespace ObjectHandler {
 			auto character = pair.second;
 
 			character->simulate();
+
+			if (character->isQuestGiver && character->isCipherSolved()) {
+				switch (character->_character) {
+				case bird0:
+					riddle0 = true;
+					break;
+				case bird1:
+					riddle1 = true;
+					break;
+				case bird2:
+					riddle2 = true;
+					break;
+				}
+				character->updateText("good job!");
+			}
+		}
+
+		if (riddle0 && riddle1 && riddle2) {
+			GateObjectHelper::list[Map::gate_crypto_puzzle]->disable();
+			GateObjectHelper::list[Map::gate_boss_02_right]->disable();
 		}
 		
 	}

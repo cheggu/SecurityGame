@@ -33,7 +33,7 @@ public:
 	bool canShoot = true;
 	sf::Clock clock;
 	sf::Clock hurtCooldown;
-	int bulletCooldown = 100;
+	float bulletCooldown = 100;
 	sf::Vector2f lastCheckpoint;
 
 	sf::Texture IdleTexture;
@@ -54,13 +54,20 @@ public:
 	bool doImpulse = false;
 	sf::Clock impulseClock;
 	
+	sf::RectangleShape shape;
 
-	Player(sf::Vector2f pos, sf::RectangleShape& shape) {
+
+	Player(sf::Vector2f pos) {
 		position = pos;
 		velocity = { 0,0 };
 		acceleration = { 0, 9.81f };
 		enttype = PLAYER;
 		id = generateID();
+
+		shape.setSize({ 10.f, 20.f });
+		shape.setFillColor(sf::Color::Green);
+		shape.setPosition(WIDTH / 2, HEIGHT / 2);
+
 		shape.setPosition(position);
 		drawable = &shape;
 		drawable->setFillColor(sf::Color::Transparent);
@@ -148,6 +155,10 @@ public:
 		case InventoryItem::BRUTEFORCE:
 			bulletCooldown = 20000;
 			break;
+		}
+
+		if (Cheats::SuperGun) {
+			bulletCooldown *= (1.f / Cheats::SuperGunCooldown);
 		}
 
 		//unlockText.setPosition(rect.left + (rect.width / 2.0f) - (unlockText.getGlobalBounds().width / 2.f), rect.top - 20);
@@ -345,8 +356,8 @@ public:
 namespace PlayerHelper {
 	std::map<int, Player*> list;
 
-	int createPlayer(sf::Vector2f pos, sf::RectangleShape& shape) {
-		auto tempPlayer = new Player(pos, shape);
+	int createPlayer(sf::Vector2f pos) { //, sf::RectangleShape& shape
+		auto tempPlayer = new Player(pos);
 
 		EntityHelper::list[tempPlayer->id] = tempPlayer;
 		list[tempPlayer->id] = tempPlayer;

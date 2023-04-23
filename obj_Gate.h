@@ -69,11 +69,23 @@ public:
 	void enable() {
 		enabled = true;
 		PlatformHelper::list.at(platformID)->enable();
+		for (auto drawable : drawableList) {
+			auto sprite = (sf::Sprite*)drawable.second;
+			sprite->setColor(sf::Color::White);
+
+		}
+		rectShape.setFillColor(sf::Color::Red);
 	}
 
 	void disable() {
 		enabled = false;
 		PlatformHelper::list.at(platformID)->disable();
+		for (auto drawable : drawableList) {
+			auto sprite = (sf::Sprite*)drawable.second;
+			sprite->setColor(sf::Color::Transparent);
+
+		}
+		rectShape.setFillColor(sf::Color::White);
 	}
 
 	void disableBullets() {

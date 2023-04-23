@@ -1,14 +1,14 @@
 #pragma once
 #include "FirewallMonster.h"
+#include "BrainMonster.h"
 #include "map_Base.h"
-
-
-
 
 namespace BossEvent {
 	FirewallMonster boss01 = FirewallMonster();
+	bool boss01beaten = false;
 
-
+	BrainMonster boss02 = BrainMonster();
+	bool boss02beaten = false;
 
 
 	sf::RectangleShape healthbar_inner;
@@ -45,12 +45,12 @@ namespace BossEvent {
 		//std::cout << healthbar_inner.getSize().x << std::endl;
 	}
 
-	void updateHealthbar() {
+	void updateHealthbar(float health) {
 		healthbar_inner.setPosition(window.mapPixelToCoords({ (int)WIDTH / 2 - (int)(healthbar_inner.getGlobalBounds().width / 2) - 10, 130 + (int)padding }));
 		healthbar_outer.setPosition(window.mapPixelToCoords({ (int)WIDTH / 2 - (int)(healthbar_outer.getGlobalBounds().width / 2) - 10, 130 }));
 		boss_name.setPosition(healthbar_outer.getPosition().x, healthbar_outer.getPosition().y + healthbar_outer.getGlobalBounds().height + padding);
 
-		setHealthbarValue(boss01.maxHealth, boss01.health);
+		setHealthbarValue(1000.f, health);
 	}
 
 	void hideHealthbar() {
@@ -65,13 +65,13 @@ namespace BossEvent {
 		boss_name.setFillColor(sf::Color::Red);
 	}
 
-	void BossFight_00() {
+	void BossFight_01() {
 		boss01.awaken();
 		EntityHelper::list[boss01.id] = &boss01;
 		drawBossHealthbar = true;
 		boss01.nextMove();
 
-		updateHealthbar();
+		updateHealthbar(boss01.health);
 
 		if (boss01.health < 0) {
 			GateObjectHelper::list.at(Map::gate_boss_01_left)->disable();
@@ -82,6 +82,7 @@ namespace BossEvent {
 
 			drawBossHealthbar = false;
 			inBattle = false;
+			boss01beaten = true;
 		}
 		else {
 			if (!inBattle) {
@@ -95,8 +96,42 @@ namespace BossEvent {
 			GateObjectHelper::list.at(Map::gate_boss_01_left)->disableBullets();
 			GateObjectHelper::list.at(Map::gate_boss_01_right)->disableBullets();
 		}
+	}
 
+	void BossFight_02() {
+		boss02.awaken();
+		EntityHelper::list[boss02.id] = &boss02;
+		drawBossHealthbar = true;
+		boss02.nextMove();
 
+		updateHealthbar(boss02.health);
+
+		if (boss02.health < 0 && boss02.isDead()) {
+			//EntityHelper::list.erase(boss02.id);
+
+			drawBossHealthbar = false;
+			inBattle = false;
+			boss02beaten = true;
+
+			GateObjectHelper::list.at(Map::gate_boss_02_left)->disable();
+			GateObjectHelper::list.at(Map::gate_boss_02_rightright)->disable();
+
+			GateObjectHelper::list.at(Map::gate_boss_03_left)->disable();
+			GateObjectHelper::list.at(Map::gate_boss_03_right)->disable();
+			//GateObjectHelper::list.at(Map::gate_castle)->disable();
+		}
+		else {
+			if (!inBattle) {
+				initHealthbar(" The Big Brain", boss02.maxHealth);
+			}
+			inBattle = true;
+
+			GateObjectHelper::list.at(Map::gate_boss_02_left)->enable();
+			GateObjectHelper::list.at(Map::gate_boss_02_rightright)->enable();
+			
+			GateObjectHelper::list.at(Map::gate_boss_02_left)->disableBullets();
+			GateObjectHelper::list.at(Map::gate_boss_02_rightright)->disableBullets();
+		}
 	}
 
 

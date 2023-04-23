@@ -5,8 +5,6 @@
 #include "Includes.h"
 #include "map_Reader.h"
 
-#include "mini_Encryption.h"
-
 class ToolboxUIElement : public uiElement {
 public:
 
@@ -76,8 +74,7 @@ public:
 			
 			//start debug minigame
 			std::cout << "debug" << std::endl;
-			Minigames::InitializeMinigames();
-			Minigames::printAllMinigameStatuses();
+
 			
 			MapReader::read();
 

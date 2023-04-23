@@ -11,8 +11,6 @@
 #include "ui_Button.h"
 #include "ui_Toolbox.h"
 
-#include "mini_Base.h"
-
 #include "Font.h"
 
 namespace Collisions {

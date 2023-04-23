@@ -58,7 +58,7 @@ namespace EntityHelper {
 
 void Entity::damage(float amount) {
 	health -= amount;
-	if (health == 0) {
+	if (health == 0 && enttype != PLAYER) {
 		EntityHelper::list.erase(this->id);
 	}
 }

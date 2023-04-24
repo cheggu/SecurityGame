@@ -157,7 +157,8 @@ namespace BossEvent {
 			drawBossHealthbar = false;
 			inBattle = false;
 			boss02beaten = true;
-			Audio::sound_boss_default.stop();
+			Audio::sound_boss_final.stop();
+			
 
 			GateObjectHelper::list.at(Map::gate_boss_03_right)->disable();
 

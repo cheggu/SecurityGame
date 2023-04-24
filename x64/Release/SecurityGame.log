@@ -175,8 +175,8 @@ C:\Users\benja\Desktop\SecurityGame\main.cpp(134,42): warning C4244: '=': conver
               T=unsigned int
           ]
   Generating code
-  1 of 2678 functions (<0.1%) were compiled, the rest were copied from previous compilation.
+  5 of 2678 functions ( 0.2%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    2 functions had inline decision re-evaluated but remain unchanged
+    32 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   SecurityGame.vcxproj -> C:\Users\benja\Desktop\SecurityGame\x64\Release\SecurityGame.exe

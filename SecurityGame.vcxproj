@@ -167,6 +167,7 @@
     <ClInclude Include="BossHandler.h" />
     <ClInclude Include="BrainMonster.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="FinalMonster.h" />
     <ClInclude Include="FirewallMonster.h" />
     <ClInclude Include="obj_Character.h" />
     <ClInclude Include="Cheats.h" />

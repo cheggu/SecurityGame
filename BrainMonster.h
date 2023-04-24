@@ -107,6 +107,12 @@ public:
 		if (distractionClock.getElapsedTime().asSeconds() > 5) {
 			distracted = false;
 		}
+		for (auto pair : BulletHelper::list) {
+			auto bullet = pair.second;
+			if (bullet->doPersist) {
+				distractionPoint = bullet->position;
+			}
+		}
 		std::cout << "distracted" << std::endl;
 	}
 
@@ -189,7 +195,7 @@ public:
 			}
 			else {
 				//center
-				side = NONE;
+				side = direction::NONE;
 			}
 
 
@@ -210,6 +216,7 @@ public:
 			}
 		}
 		else {
+			
 			if (!mutex) {
 				//playFirewallDeath();
 			}
@@ -220,6 +227,7 @@ public:
 			position = sprite.getPosition();
 			if (abs(position.y - pixelpos.y) < 300) {
 				die();
+				
 			}
 		}
 

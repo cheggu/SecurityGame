@@ -6,7 +6,8 @@
 enum character {
 	bird0,
 	bird1,
-	bird2
+	bird2,
+	hacker
 };
 
 sf::FileInputStream riddle0file;
@@ -28,6 +29,7 @@ std::vector<std::string> bird2_dialogue = { "hello, i am lord availabilitus", "i
 											"solve our ciphers to earn your prize", "my cipher is located at\n/Content/Ciphers/cipher2.txt\nin the game files",
 											"write your answer and save the document,\nand talk to me when you've solved it.", "my cipher is 'hvxfirgb' and my hint is \n'a=z'\n'b=y'\n'c=x'" };
 
+std::vector<std::string> hacker_dialogue = { "huh?", "why are you here?\nthis is my root domain.", "... you're here to challenge me,\naren't you?", "well then, prepare to be dereferenced.", ""};
 
 class Character : public BaseObject {
 
@@ -43,6 +45,7 @@ private:
 	sf::Text interactText;
 	int dialogue_counter;
 	bool cipher_solved;
+	bool ishacker = false;
 
 public:
 	
@@ -90,6 +93,14 @@ public:
 		interactText.setFillColor(sf::Color::White);
 
 		rect = (sf::IntRect)sprite.getGlobalBounds();
+
+		if (c == hacker) {
+			rect.height += 100;
+			rect.width += 100;
+			rect.left -= 50;
+			rect.top -= 50;
+			ishacker = true;
+		}
 
 		drawableList[0] = &sprite;
 		drawableList[1] = &interactText;
@@ -196,6 +207,22 @@ public:
 					dialogue_counter++;
 				}
 				break;
+			case hacker:
+				isQuestGiver = false;
+				interactText.setString(hacker_dialogue.at(dialogue_counter));
+				if (dialogue_counter == hacker_dialogue.size() - 1) {
+
+					interactText.setFillColor(sf::Color::Transparent);
+					sprite.setColor(sf::Color::Transparent);
+					//BossEvent::BossFight_03();
+					std::cout << "start boss 3 event" << std::endl;
+					spawnFinalBoss = true;
+				}
+				else {
+					dialogue_counter++;
+				}
+				break;
+
 			}
 			
 			interactText.setPosition(sprite.getPosition().x - (interactText.getGlobalBounds().width / 4), sprite.getPosition().y -(interactText.getGlobalBounds().height) - 10);

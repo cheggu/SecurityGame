@@ -45,6 +45,14 @@ namespace Audio {
     sf::SoundBuffer buf_firewall_death;
     sf::Sound sound_firewall_death;
 
+    sf::SoundBuffer buf_grungy;
+    sf::Sound sound_grungy;
+
+    sf::SoundBuffer buf_boss_default;
+    sf::Sound sound_boss_default;
+    
+    bool playingDefault = false;
+
 
     void bootstrap() {
         if (!buf_laser_00.loadFromFile("Content/Audio/Blaster/laser_00.ogg")) {
@@ -117,6 +125,17 @@ namespace Audio {
         }
         sound_firewall_death.setBuffer(buf_firewall_death);
 
+        if (!buf_grungy.loadFromFile("Content/Audio/Grungy.wav")) {
+            std::cout << "bad sound" << std::endl;
+        }
+        sound_grungy.setBuffer(buf_grungy);
+        sound_grungy.setLoop(true);
+
+        if (!buf_boss_default.loadFromFile("Content/Audio/Boss_normal.wav")) {
+            std::cout << "bad sound" << std::endl;
+        }
+        sound_boss_default.setBuffer(buf_boss_default);
+        sound_boss_default.setLoop(true);
 
     }
 

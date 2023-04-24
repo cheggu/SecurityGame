@@ -242,6 +242,7 @@ public:
 			if (!mutex) {
 				playFirewallDeath();
 			}
+			
 			mutex = true;
 			auto pixelpos = window.mapPixelToCoords({ (int)WIDTH / 2, (int)HEIGHT + 500 });
 			sf::Vector2f movement = (pixelpos - position);

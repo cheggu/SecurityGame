@@ -5,9 +5,6 @@
 
 class BaseObject : public Entity {
 public:
-	
-
-
 	//sf::RectangleShape* drawable;
 	std::map<int, sf::Drawable*> drawableList = {};
 

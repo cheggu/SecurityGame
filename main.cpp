@@ -12,7 +12,7 @@ int main()
 
 
     // PLAYER CREATION
-    int playerid = PlayerHelper::createPlayer({ 390, 800 }); //level1    390, 800     level2   4315, -1200      level3 5600, -3500      level 4   1820, -3450       brain  3197, -3453
+    int playerid = PlayerHelper::createPlayer({ 390, 700 }); //level1    390, 700     level2   4315, -1200      level3 5600, -3500      level 4   1820, -3450       brain  3197, -3453      // boss3  4666, 780
     std::cout << "playerid" << playerid << std::endl;
 
     Audio::bootstrap();
@@ -28,6 +28,26 @@ int main()
     uiView.reset(sf::FloatRect(-2000, -2000, WIDTH, HEIGHT));
     uiView.setViewport(sf::FloatRect(0.f, 0.f, 1.f, 1.f));
 
+    sf::Text info;
+    info.setFont(Font::emulogic);
+    info.setCharacterSize(10);
+    info.setFillColor(sf::Color::White); //5688, 490
+    info.setString("");
+    
+
+    sf::Text controls;
+    controls.setFont(Font::emulogic);
+    controls.setCharacterSize(13);
+    controls.setFillColor(sf::Color::White); //5688, 490
+    controls.setString("wasd to move\ne to interact\nspace to jump\nhold shift to sprint\nnumber keys to\nchange gizmos\nleft click to fire");
+
+    sf::Text credits;
+    credits.setFont(Font::emulogic);
+    credits.setCharacterSize(20);
+    credits.setFillColor(sf::Color::White); //5688, 490
+    credits.setPosition(5688, 490);
+    credits.setString("thank you for playing my game\ni didnt have time for a proper ending\nyou get the castle and you win yada yada\ndeveloped by ben marksberry\nmusic by my best friends ian halpaus and trevor spurbeck\nmain character sprite modeled from some online template\ndeveloped for cs5732 at UMD Spring 2023");
+
     //AIHelper::createAI(FIREWALLGRUNT, { WIDTH / 4, HEIGHT / 2 });
 
     Map::load(Map::LEVEL0);
@@ -35,7 +55,10 @@ int main()
 
     //              TEMPORARY - NEEDS TO BE MOVED                      //
 
-    
+    sf::IntRect slot0 = { ((int)WIDTH / 2) - 230, 15, 100, 100 };
+    sf::IntRect slot1 = { ((int)WIDTH / 2) - 115, 15, 100, 100 };
+    sf::IntRect slot2 = { ((int)WIDTH / 2), 15, 100, 100 };
+    sf::IntRect slot3 = { ((int)WIDTH / 2) + 115, 15, 100, 100 };
 
     /////////////////////////////////////////////////////////////////////
 
@@ -67,6 +90,7 @@ int main()
 
         //std::cout << lerp(5000) << std::endl;
         
+        controls.setPosition(window.mapPixelToCoords({ (int)WIDTH - 300, 15 }));
 
         sf::Event event;
         while (window.pollEvent(event))
@@ -78,46 +102,28 @@ int main()
                     player.second->unduck();
                 }
             }
-            if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Left) {
-                Map::mapSprite.move({ -50, 0 });
-            }
-            if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Right) {
-                Map::mapSprite.move({ 50, 0 });
-            }
-            if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Up) {
-                Map::mapSprite.move({ 0, -50 });
-            }
-            if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Down) {
-                Map::mapSprite.move({ 0, 50 });
-            }
-            if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::U) {
-                //PlayerHelper::list.at(playerid)->hurt(10.0f);// health -= 10.0f;
-                for (auto pair : GateObjectHelper::list) {
-                    auto gate = pair.second;
-                    gate->toggle();
-                }
-            }
-            if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::K) {
-                PlayerHelper::list.at(playerid)->hurt(50.0f);// health -= 10.0f;
-            }
             if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Num1) {
                 if (Inventory::equipItem(InventoryItem::DOSGUN)) {
                     PlayerHelper::list.at(playerid)->clock.restart();
+                    info.setString("The DOS-gun\nStandard edition Denial of Service Pistol\nMaster of none");
                 }
             }
             if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Num2) {
                 if (Inventory::equipItem(InventoryItem::PORTGUN)) {
                     PlayerHelper::list.at(playerid)->clock.restart();
+                    info.setString("The Port Scanner\nUsed to detect hidden open ports\nGreat for breaking and entering!");
                 }
             }
             if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Num3) {
                 if (Inventory::equipItem(InventoryItem::CRYPTOGUN)) {
                     PlayerHelper::list.at(playerid)->clock.restart();
+                    info.setString("The Cipher\nManifests 'blobs' of highly encrypted data\nSome 'minds' might find this interesting!");
                 }
             }
             if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Num4) {
                 if (Inventory::equipItem(InventoryItem::BRUTEFORCE)) {
                     PlayerHelper::list.at(playerid)->clock.restart();
+                    info.setString("Brute Force\nThe end-all to every solution\nUseful for... breaking things.");
                 }
             }
             if (event.type == sf::Event::MouseButtonReleased && event.key.code == sf::Mouse::Left) {
@@ -131,6 +137,38 @@ int main()
             }
 
         }
+
+        auto pos = sf::Mouse::getPosition(window);
+        if (slot0.contains(pos)) {
+            info.setString("The DOS-gun\nStandard edition Denial of Service Pistol\nMaster of none");
+            drawInfo = true;
+        }
+        else if (slot1.contains(pos)) {
+            if (Inventory::unlockedItemList.find(InventoryItem::PORTGUN)->second == true) {
+                info.setString("The Port Scanner\nUsed to detect hidden open ports or other hidden things\nTry using on an enemy\nGreat for breaking and entering!");
+                drawInfo = true;
+            }
+            
+        }
+        else if (slot2.contains(pos)) {
+            if (Inventory::unlockedItemList.find(InventoryItem::CRYPTOGUN)->second == true) {
+                info.setString("The Cipher\nManifests 'blobs' of highly encrypted data\nTry using on an enemy\nSome 'minds' might find this interesting!");
+                drawInfo = true;
+            }
+        }
+        else if (slot3.contains(pos)) {
+            if (Inventory::unlockedItemList.find(InventoryItem::BRUTEFORCE)->second == true) {
+                info.setString("Brute Force\nThe end-all to every solution\nTry using on an enemy\nUseful for... breaking things.");
+                drawInfo = true;
+            }
+        }
+        else {
+            drawInfo = false;
+        }
+
+        info.setPosition(window.mapPixelToCoords({ (int)WIDTH / 2 - ((int)info.getGlobalBounds().width / 2), 130 }));
+
+        
 
         if (Cheats::UnlockAllGizmos) {
             Inventory::unlockItem(DOSGUN);
@@ -155,6 +193,16 @@ int main()
 
         simulate();
 
+        if (Audio::sound_grungy.getStatus() != Audio::sound_grungy.Playing && !BossEvent::inBattle) {
+            //Audio::playingDefault = true;
+            if (Audio::sound_grungy.getStatus() != Audio::sound_grungy.Playing) {
+                Audio::sound_grungy.play();
+                std::cout << Audio::sound_grungy.getStatus() << std::endl;
+            }
+            
+            //std::cout << "shit " << std::endl;
+        }
+
         // DRAWING
         window.draw(Map::mapSprite);
 
@@ -164,6 +212,10 @@ int main()
                 window.draw(*drawable.second);
             }
 
+        }
+
+        if (drawCredits) {
+            window.draw(credits);
         }
 
         for (auto pair : InvisLayerHelper::list) {
@@ -189,6 +241,14 @@ int main()
 
         if (!BossEvent::boss02.isDead()) {
             for (auto pair : BossEvent::boss02.drawableList) {
+                auto sprite = pair.second;
+
+                window.draw(*sprite);
+            }
+        }
+
+        if (!BossEvent::boss03.isDead()) {
+            for (auto pair : BossEvent::boss03.drawableList) {
                 auto sprite = pair.second;
 
                 window.draw(*sprite);
@@ -229,6 +289,11 @@ int main()
                 signalPlayerHit = false;
             }
 
+            if (signalPlayerHit && !BossEvent::boss03.isDead()) {
+                BossEvent::boss03.hurtPlayer(10.f);
+                signalPlayerHit = false;
+            }
+
             if (!isColliding) {
                 bullet->simStep(physics::dt);
                 window.draw(*bullet->drawable);
@@ -245,6 +310,11 @@ int main()
             }
         }
 
+        window.draw(controls);
+        if (drawInfo) {
+            window.draw(info);
+        }
+        
         // DRAW UI VIEW SECTION
         UIInventoryHelper::list[0]->update(Inventory::unlockedItemList, Inventory::currentyEquippedItem);
        

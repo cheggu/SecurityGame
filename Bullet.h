@@ -11,6 +11,7 @@ public:
 	int doPersistTime = 0;
 	bool hasOwner;
 	int ownerID;
+	bool isBruteForce = false;
 
 	Bullet(direction direction, sf::Vector2f origin) {
 		enttype = PROJECTILE;
@@ -207,9 +208,21 @@ public:
 					}
 					if (ent.second->id == boss02id) {
 						if (doPersist) {
-							damage *= 0.05;
+
+							damage *= physics::dt * 5.f;
+						}
+						else {
+							damage = 3.5f;
 						}
 					}
+					if (ent.second->id == boss03id) {
+						if (isBruteForce) {
+							finalBossBruteHit = true;
+							std::cout << "foobar" << std::endl;
+						}
+						damage = 10.f;
+					}
+					
 
 					ent.second->damage(damage);
 					return true;
@@ -285,6 +298,17 @@ namespace BulletHelper {
 
 	int createCustomAngledBullet(sf::Vector2f origin, sf::Vector2f destination, sf::RectangleShape drawable, bool hasOwner, int ownerID) {
 		auto tempEnt = new Bullet(origin, destination, drawable, hasOwner, ownerID);
+
+		EntityHelper::list[tempEnt->id] = tempEnt;
+		list[tempEnt->id] = tempEnt;
+
+		return tempEnt->id;
+	}
+
+	int createCustomAngledBullet_Brute(sf::Vector2f origin, sf::Vector2f destination, sf::RectangleShape drawable) {
+		auto tempEnt = new Bullet(origin, destination, drawable);
+
+		tempEnt->isBruteForce = true;
 
 		EntityHelper::list[tempEnt->id] = tempEnt;
 		list[tempEnt->id] = tempEnt;

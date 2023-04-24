@@ -39,9 +39,10 @@ void simulate() {
             p->reset(); 
             BossEvent::boss01.health = BossEvent::boss01.maxHealth;
             BossEvent::boss02.health = BossEvent::boss02.maxHealth;
+            BossEvent::boss03.health = BossEvent::boss03.maxHealth;
 
             GateObjectHelper::list[Map::gate_boss_02_rightright]->disable();
-
+            GateObjectHelper::list[Map::gate_boss_03_right]->disable();
         }
         EndCondition = false;
     }

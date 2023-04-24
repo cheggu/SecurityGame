@@ -170,6 +170,9 @@
     <ClInclude Include="BrainMonster.h">
       <Filter>Header Files\Bosses</Filter>
     </ClInclude>
+    <ClInclude Include="FinalMonster.h">
+      <Filter>Header Files\Bosses</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="todo.txt">

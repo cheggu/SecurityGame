@@ -1,6 +1,7 @@
 #pragma once
 #include "FirewallMonster.h"
 #include "BrainMonster.h"
+#include "FinalMonster.h"
 #include "map_Base.h"
 
 namespace BossEvent {
@@ -10,6 +11,8 @@ namespace BossEvent {
 	BrainMonster boss02 = BrainMonster();
 	bool boss02beaten = false;
 
+	FinalMonster boss03 = FinalMonster();
+	bool boss03beaten = false;
 
 	sf::RectangleShape healthbar_inner;
 	sf::RectangleShape healthbar_outer;
@@ -17,6 +20,8 @@ namespace BossEvent {
 	float padding = 5.f;
 	float healthValue = 1.f;
 	bool inBattle = false;
+
+	bool ihatemutexlocks = false;
 
 	bool drawBossHealthbar = false;
 
@@ -78,19 +83,20 @@ namespace BossEvent {
 			GateObjectHelper::list.at(Map::gate_boss_01_right)->disable();
 			
 			EntityHelper::list.erase(boss01.id);
-			
+			Audio::sound_boss_default.stop();
 
 			drawBossHealthbar = false;
 			inBattle = false;
 			boss01beaten = true;
+			
 		}
 		else {
 			if (!inBattle) {
 				initHealthbar(" Glog, the Firewall", boss01.maxHealth);
+				Audio::sound_boss_default.play();
 			}
 			inBattle = true;
-			
-
+			Audio::sound_grungy.stop();
 			GateObjectHelper::list.at(Map::gate_boss_01_left)->enable();
 			GateObjectHelper::list.at(Map::gate_boss_01_right)->enable();
 			GateObjectHelper::list.at(Map::gate_boss_01_left)->disableBullets();
@@ -112,6 +118,7 @@ namespace BossEvent {
 			drawBossHealthbar = false;
 			inBattle = false;
 			boss02beaten = true;
+			Audio::sound_boss_default.stop();
 
 			GateObjectHelper::list.at(Map::gate_boss_02_left)->disable();
 			GateObjectHelper::list.at(Map::gate_boss_02_rightright)->disable();
@@ -123,14 +130,48 @@ namespace BossEvent {
 		else {
 			if (!inBattle) {
 				initHealthbar(" The Big Brain", boss02.maxHealth);
+				Audio::sound_boss_default.play();
 			}
 			inBattle = true;
+			Audio::sound_grungy.stop();
 
 			GateObjectHelper::list.at(Map::gate_boss_02_left)->enable();
 			GateObjectHelper::list.at(Map::gate_boss_02_rightright)->enable();
 			
 			GateObjectHelper::list.at(Map::gate_boss_02_left)->disableBullets();
 			GateObjectHelper::list.at(Map::gate_boss_02_rightright)->disableBullets();
+		}
+	}
+
+	void BossFight_03() {
+		boss03.awaken();
+		EntityHelper::list[boss03.id] = &boss03;
+		drawBossHealthbar = true;
+		boss03.nextMove();
+
+		updateHealthbar(boss03.health);
+
+		if (boss03.health < 0 && boss03.isDead()) {
+			//EntityHelper::list.erase(boss02.id);
+
+			drawBossHealthbar = false;
+			inBattle = false;
+			boss02beaten = true;
+			Audio::sound_boss_default.stop();
+
+			GateObjectHelper::list.at(Map::gate_boss_03_right)->disable();
+
+			drawCredits = true;
+		}
+		else {
+			if (!inBattle) {
+				initHealthbar("sudo", boss03.maxHealth);
+				Audio::sound_boss_default.play();
+			}
+			inBattle = true;
+			Audio::sound_grungy.stop();
+			GateObjectHelper::list.at(Map::gate_boss_03_right)->enable();
+			GateObjectHelper::list.at(Map::gate_boss_03_right)->disableBullets();
 		}
 	}
 

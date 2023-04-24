@@ -147,13 +147,13 @@ public:
 			bulletCooldown = 100;
 			break;
 		case InventoryItem::PORTGUN:
-			bulletCooldown = 2000;
+			bulletCooldown = 1750;
 			break;
 		case InventoryItem::CRYPTOGUN:
-			bulletCooldown = 5000;
+			bulletCooldown = 3500;
 			break;
 		case InventoryItem::BRUTEFORCE:
-			bulletCooldown = 20000;
+			bulletCooldown = 7500;
 			break;
 		}
 
@@ -179,8 +179,8 @@ public:
 			else if (Inventory::currentyEquippedItem == InventoryItem::BRUTEFORCE) {
 				sf::RectangleShape tempRect;
 				tempRect.setFillColor(sf::Color(0xFF760DFF));
-				tempRect.setSize({ 25,25 });
-				BulletHelper::createCustomAngledBullet({ position.x, position.y - 25 }, window.mapPixelToCoords(pixelpos), tempRect);
+				tempRect.setSize({ 50,50 });
+				BulletHelper::createCustomAngledBullet_Brute({ position.x, position.y - 50 }, window.mapPixelToCoords(pixelpos), tempRect);
 			}
 			else if (Inventory::currentyEquippedItem == InventoryItem::PORTGUN) {
 				doImpulse = true;

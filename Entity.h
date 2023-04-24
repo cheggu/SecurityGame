@@ -40,7 +40,7 @@ public:
 		acceleration = { 0,0 };
 	}
 
-	void damage(float amount);
+	virtual void damage(float amount);
 
 };
 

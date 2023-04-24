@@ -7,7 +7,8 @@ enum InventoryItem {
 	DOSGUN,
 	PORTGUN,
 	CRYPTOGUN,
-	BRUTEFORCE
+	BRUTEFORCE,
+	INVNONE
 };
 
 class InventorySlot : public uiElement {
@@ -16,6 +17,7 @@ private:
 	sf::RectangleShape InnerBox;
 	sf::Texture Texture;
 	sf::Sprite Icon;
+	sf::FloatRect rect;
 
 
 public:
@@ -39,6 +41,8 @@ public:
 		Icon.setPosition(position);
 
 		Item = item;
+
+		rect = { position.x, position.y, 100, 100 };
 
 		drawableList[0] = &OuterBox;
 		drawableList[1] = &Icon;
@@ -107,7 +111,6 @@ public:
 
 		sf::Image image3;
 		image3.loadFromFile("Content\\Sprites\\Icons\\brute.png");
-		
 
 		UIInventorySlotHelper::createInventorySlot(image0, { (WIDTH / 2) - 230 - 2000, 15 - 2000 }, InventoryItem::DOSGUN);
 		UIInventorySlotHelper::createInventorySlot(image1, { (WIDTH / 2) - 115 - 2000, 15 - 2000 }, InventoryItem::PORTGUN);

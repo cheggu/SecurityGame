@@ -166,7 +166,7 @@ namespace BossEvent {
 		else {
 			if (!inBattle) {
 				initHealthbar("sudo", boss03.maxHealth);
-				Audio::sound_boss_default.play();
+				Audio::sound_boss_final.play();
 			}
 			inBattle = true;
 			Audio::sound_grungy.stop();

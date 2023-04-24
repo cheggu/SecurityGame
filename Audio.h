@@ -50,6 +50,9 @@ namespace Audio {
 
     sf::SoundBuffer buf_boss_default;
     sf::Sound sound_boss_default;
+
+    sf::SoundBuffer buf_boss_final;
+    sf::Sound sound_boss_final;
     
     bool playingDefault = false;
 
@@ -136,6 +139,12 @@ namespace Audio {
         }
         sound_boss_default.setBuffer(buf_boss_default);
         sound_boss_default.setLoop(true);
+
+        if (!buf_boss_final.loadFromFile("Content/Audio/Boss_final.wav")) {
+            std::cout << "bad sound" << std::endl;
+        }
+        sound_boss_final.setBuffer(buf_boss_final);
+        sound_boss_final.setLoop(true);
 
     }
 
